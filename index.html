@@ -4,12 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>WoT-Lom | Читерский модпак для World of Tanks</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-color: #0f0f0f;
             --card-bg: #1a1a1a;
-            --accent-color: #ff8c00; /* Танковый оранжевый */
+            --accent-color: #ff9900; /* Оранжевый в стиле WoT */
             --text-color: #e0e0e0;
             --text-muted: #aaaaaa;
         }
@@ -17,7 +16,7 @@
         body {
             background-color: var(--bg-color);
             color: var(--text-color);
-            font-family: 'Roboto', sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             margin: 0;
             padding: 0;
             line-height: 1.6;
@@ -32,47 +31,45 @@
             margin: 40px auto;
             background: var(--card-bg);
             padding: 30px;
-            border-radius: 12px;
+            border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
             border: 1px solid #333;
         }
 
-        .header-img {
-            width: 100%;
-            max-width: 600px;
-            display: block;
-            margin: 0 auto 30px;
-            filter: drop-shadow(0 0 10px rgba(255, 140, 0, 0.3));
-        }
-
-        h1 {
-            font-family: 'Oswald', sans-serif;
+        .header {
             text-align: center;
-            color: var(--accent-color);
-            text-transform: uppercase;
-            letter-spacing: 2px;
-            margin-bottom: 25px;
-            font-size: 2.2rem;
-        }
-
-        .content-text {
-            font-size: 1.05rem;
-            text-align: justify;
-            color: var(--text-color);
-            border-bottom: 1px solid #333;
-            padding-bottom: 30px;
             margin-bottom: 30px;
         }
 
-        .content-text p {
-            margin-bottom: 15px;
+        .header img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            margin-bottom: 20px;
         }
 
-        .recommendations {
-            background: rgba(255, 140, 0, 0.05);
-            padding: 20px;
-            border-left: 4px solid var(--accent-color);
-            margin-top: 20px;
+        h1 {
+            color: var(--accent-color);
+            font-size: 2.2em;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .description {
+            font-size: 1.05em;
+            color: var(--text-color);
+            text-align: justify;
+            margin-bottom: 30px;
+        }
+
+        .warning-box {
+            background: rgba(255, 153, 0, 0.1);
+            border-left: 5px solid var(--accent-color);
+            padding: 15px;
+            margin: 20px 0;
             font-style: italic;
         }
 
@@ -80,42 +77,23 @@
         #timer-container {
             text-align: center;
             margin: 40px 0;
+            padding: 20px;
+            border: 2px dashed #444;
+            border-radius: 10px;
         }
 
-        .timer-circle {
-            width: 80px;
-            height: 80px;
-            border: 4px solid #333;
-            border-top: 4px solid var(--accent-color);
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto 15px;
-            font-size: 1.8rem;
+        .timer-number {
+            font-size: 3em;
             font-weight: bold;
-            font-family: 'Oswald', sans-serif;
-            animation: spin 2s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { border-top-color: var(--accent-color); }
-            50% { border-top-color: #ff4500; }
-            100% { border-top-color: var(--accent-color); }
-        }
-
-        .timer-text {
-            color: var(--text-muted);
-            font-size: 0.9rem;
-            text-transform: uppercase;
+            color: var(--accent-color);
+            display: block;
         }
 
         /* Кнопки */
         #download-section {
-            display: none; /* Скрыто изначально */
-            flex-direction: column;
-            gap: 15px;
-            align-items: center;
+            display: none; /* Скрыто до конца таймера */
+            text-align: center;
+            margin: 40px 0;
             animation: fadeIn 1s ease-in-out;
         }
 
@@ -125,109 +103,121 @@
         }
 
         .btn {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            width: 100%;
-            max-width: 500px;
-            padding: 18px;
-            text-decoration: none;
+            display: block;
+            background: linear-gradient(135deg, #ff9900 0%, #cc7a00 100%);
             color: #000;
-            background: var(--accent-color);
-            font-family: 'Oswald', sans-serif;
+            text-decoration: none;
+            padding: 15px 25px;
+            margin: 15px auto;
+            width: 80%;
+            max-width: 400px;
+            border-radius: 5px;
             font-weight: bold;
-            font-size: 1.1rem;
-            border-radius: 6px;
-            transition: all 0.3s ease;
             text-transform: uppercase;
-            box-shadow: 0 4px 15px rgba(255, 140, 0, 0.2);
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 153, 0, 0.3);
         }
 
         .btn:hover {
-            background: #ffa500;
-            transform: scale(1.02);
-            box-shadow: 0 6px 20px rgba(255, 140, 0, 0.4);
+            transform: scale(1.03);
+            box-shadow: 0 6px 20px rgba(255, 153, 0, 0.5);
+            background: linear-gradient(135deg, #ffae33 0%, #ff9900 100%);
         }
 
-        .btn-mail {
-            background: #005ff9;
-            color: #fff;
+        .rules-section {
+            background: #222;
+            padding: 25px;
+            border-radius: 10px;
+            margin-top: 30px;
         }
-        .btn-mail:hover {
-            background: #267aff;
+
+        .rules-section h2 {
+            color: var(--accent-color);
+            margin-top: 0;
+        }
+
+        .rules-list {
+            padding-left: 20px;
+        }
+
+        .rules-list li {
+            margin-bottom: 10px;
+            color: var(--text-muted);
         }
 
         footer {
-            margin: 40px 0;
-            color: var(--text-muted);
-            font-size: 0.8rem;
             text-align: center;
-        }
-
-        /* Адаптивность */
-        @media (max-width: 600px) {
-            h1 { font-size: 1.6rem; }
-            .container { padding: 15px; }
-            .btn { font-size: 0.9rem; padding: 15px; }
+            padding: 20px;
+            color: #555;
+            font-size: 0.9em;
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <img src="https://wot-lom.com/wp-content/uploads/2020/10/wot-lom-modpack.png" alt="WoT-Lom Modpack" class="header-img">
-    
-    <h1>WoT-Lom / Читерский модпак для World of Tanks !</h1>
-
-    <div class="content-text">
-        <p>Если вы не хотите искать по всему интернету и качать все моды по одному а хотите всё и сразу, то поздравляю, вы нашли то что искали! В сборку WoT-Lom входят все лучшие читы и моды для игры Ворлд оф Танкс, плюс настройки от автора и возможность выбрать разнообразные конфигурации по своему вкусу.</p>
-        
-        <p>В установщике модпака есть вся необходимая информация по модам а так же визуальный просмотр устанавливаемых модов. Опытному пользователю модов, будет сразу понятно по списку модификаций, что в данной сборке находятся все самые необходимые и актуальные моды и читы, для того чтобы насладиться игрой World of tanks.</p>
-        
-        <p>А неопытный пользователь, после первой же установки, сравнив игру с модами/читами из данного мод-пака и без них, надолго затянется в мир танков и намного быстрее наберётся опыта играя с комфортом! Читы для World of Tanks являются уникальными модами (читами) которые дают ряд преимуществ игрокам WoT. Их ещё называют запрещённые моды.</p>
-        
-        <p>За использование читов в игре, конечно можно получить временный бан или лишиться аккаунта. Всегда помните об этом и играйте с умом! Что касается самих читов, то самыми популярными читами являются конечно авто прицелы (Аимы/Аимботы) Сае, Ванга или Шайтан. Так же очень многим игрокам мешает листва, поэтому чит Тундра тоже очень популярен. Читы например позволят вам обнаружить артиллерию и узнать время её перезарядки. Ну или перезарядки всех танков.</p>
-        
-        <p>А если вы хотите поднять ФПС в игре, то в модпаке есть отдельная страница с WoT Tweaker где вы можете выбрав необходимые пункты, отключить разные эффекты такие как: дым, уничтожения танка, отображения облаков, птиц, эффекты выстрелов, тем самым повысив быстродействие игры. Вообще разнообразие чит/модов очень обширно и с каждым разом их становится все больше, они расширяются и улучшаются.</p>
-
-        <div class="recommendations">
-            <strong>Что нужно помнить при игре с читами:</strong><br>
-            Если говорить о рекомендациях о игре с читами, то можно выделить несколько пунктов. Банально но… скриншоты и видосы со своей игрой, где у вас установлены читы, никогда и никому не показывайте и не отсылайте. Если вы заметили что где то сломался забор или повалилось дерево, не смотрите в ту сторону, а смотрите на мини-карту, потому что там и так всё видно и понятно. Если в игре три арты, не нужно вырезать их всех и тем более делать так в каждом бою. Если играете с тундрой, то хотя бы делайте вид что, что то выцеливате или отъезжаете от куста на 15м. Ближе к концу боя если вы всё еще в строю, всегда держите в голове что за вашей игрой кто-то наблюдает.
-        </div>
+    <div class="header">
+        <img src="https://wot-lom.com/wp-content/uploads/2020/10/wot-lom-modpack.png" alt="WoT-Lom Modpack">
+        <h1>WoT-Lom / Читерский модпак для World of Tanks !</h1>
     </div>
 
-    <!-- Блок таймера -->
+    <div class="description">
+        Если вы не хотите искать по всему интернету и качать все моды по одному, а хотите всё и сразу, то поздравляю, вы нашли то, что искали! В сборку WoT-Lom входят все лучшие читы и моды для игры Ворлд оф Танкс, плюс настройки от автора и возможность выбрать разнообразные конфигурации по своему вкусу.
+        <br><br>
+        В установщике модпака есть вся необходимая информация по модам, а также визуальный просмотр устанавливаемых модов. Опытному пользователю будет сразу понятно по списку модификаций, что в данной сборке находятся все самые необходимые и актуальные моды и читы. А неопытный пользователь после первой же установки надолго затянется в мир танков, играя с комфортом!
+    </div>
+
+    <div class="warning-box">
+        Читы для World of Tanks являются уникальными модами, которые дают ряд преимуществ. Их ещё называют запрещённые моды. За использование читов в игре можно получить временный бан или лишиться аккаунта. Помните об этом и играйте с умом!
+    </div>
+
+    <div class="description">
+        Самыми популярными являются автоприцелы (Аимы/Аимботы) Сае, Ванга или Шайтан. Также многим мешает листва, поэтому чит Тундра крайне востребован. Читы позволят вам обнаружить артиллерию, узнать время её перезарядки или поднять ФПС с помощью WoT Tweaker, отключив лишние эффекты (дым, облака, взрывы).
+    </div>
+
     <div id="timer-container">
-        <div class="timer-circle" id="seconds">10</div>
-        <div class="timer-text">Ссылки для скачивания появятся через 10 сек.</div>
+        <p>Ссылки на скачивание появятся через:</p>
+        <span id="timer" class="timer-number">10</span>
+        <p>секунд</p>
     </div>
 
-    <!-- Блок кнопок -->
     <div id="download-section">
         <a href="#" class="btn">Скачать WoT-Lom «Google Диск» «RU регион»</a>
-        <a href="#" class="btn btn-mail">Скачать WoT-Lom «Облако Mail» «RU регион»</a>
-        <a href="#" class="btn">Скачать WoT-Lom «Google Диск» «EU регион»</a>
+        <a href="#" class="btn">Скачать WoT-Lom «Облако Mail» «RU регион»</a>
+        <a href="#" class="btn" style="background: linear-gradient(135deg, #5cacee 0%, #2574ad 100%); box-shadow: 0 4px 15px rgba(92, 172, 238, 0.3);">Скачать WoT-Lom «Google Диск» «EU регион»</a>
+    </div>
+
+    <div class="rules-section">
+        <h2>Что нужно помнить при игре с читами:</h2>
+        <ul class="rules-list">
+            <li>Никогда не показывайте и не отсылайте скриншоты или видео своей игры с установленными читами.</li>
+            <li>Если заметили поваленный забор или дерево — не смотрите туда пристально, ориентируйтесь по мини-карте.</li>
+            <li>Не уничтожайте всю арту сразу в каждом бою, не привлекайте лишнего внимания.</li>
+            <li>С «Тундрой» делайте вид, что выцеливаете противника (водите по контуру) и отъезжайте от кустов на 15м.</li>
+            <li>Помните, что за вашей игрой могут наблюдать (рекомендуем мод «Наблюдатель»).</li>
+            <li>Использование аима без наводки на силуэт — это прямой путь к «палеву». Играйте аккуратно!</li>
+        </ul>
     </div>
 </div>
 
 <footer>
-    &copy; 2024 WoT-Lom.com — Лучшие модификации для World of Tanks
+    &copy; 2026 wot-lom.com. Все права защищены.
 </footer>
 
 <script>
     let timeLeft = 10;
-    const timerElement = document.getElementById('seconds');
+    const timerElement = document.getElementById('timer');
     const timerContainer = document.getElementById('timer-container');
     const downloadSection = document.getElementById('download-section');
 
     const countdown = setInterval(() => {
         timeLeft--;
-        timerElement.innerText = timeLeft;
+        timerElement.textContent = timeLeft;
 
         if (timeLeft <= 0) {
             clearInterval(countdown);
             timerContainer.style.display = 'none';
-            downloadSection.style.display = 'flex';
+            downloadSection.style.display = 'block';
         }
     }, 1000);
 </script>
