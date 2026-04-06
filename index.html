@@ -66,68 +66,92 @@
     padding: 0 20px 60px;
   }
 
-  /* ── БЛОК ДОНАТА (СПРАВА) ── */
-  .side-donate {
-    position: fixed;
-    top: 180px;
-    left: calc(50% + 500px);
-    width: 240px;
+  /* ── ВИДЖЕТ ДОНАТА (ПОД КАРТИНКОЙ, ЛИПКИЙ) ── */
+  .donate-sticky-bar {
+    position: sticky;
+    top: 10px; /* Отступ от верха при прилипании */
+    z-index: 100;
     background: var(--panel);
     border: 1px solid var(--border);
+    border-top: 2px solid var(--orange);
     border-radius: 4px;
-    padding: 20px;
-    z-index: 100;
-    animation: fadeUp .8s .4s ease both;
+    padding: 15px 25px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    animation: fadeUp .8s .3s ease both;
   }
 
-  .side-donate::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: var(--orange);
+  .donate-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
   }
 
-  .side-donate h3 {
+  .donate-icon {
+    background: rgba(232,124,30,0.1);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 1px solid rgba(232,124,30,0.3);
+  }
+
+  .donate-text-content h3 {
     font-family: 'Russo One', sans-serif;
-    font-size: 15px;
+    font-size: 14px;
     color: var(--orange);
     text-transform: uppercase;
     letter-spacing: 1px;
-    margin-bottom: 10px;
   }
 
-  .side-donate p {
-    font-size: 13px;
-    line-height: 1.5;
+  .donate-text-content p {
+    font-size: 12px;
     color: var(--textdim);
-    margin-bottom: 15px;
+    font-weight: 500;
   }
 
-  .side-donate .btn-don {
-    display: block;
-    text-align: center;
-    background: rgba(232,124,30,0.1);
-    border: 1px solid var(--orange);
-    color: var(--orange);
+  .donate-link {
+    background: var(--orange);
+    color: #fff;
     text-decoration: none;
     font-family: 'Russo One', sans-serif;
     font-size: 13px;
-    padding: 10px;
-    border-radius: 2px;
+    padding: 10px 20px;
+    border-radius: 3px;
     transition: all 0.3s;
     text-transform: uppercase;
+    white-space: nowrap;
+    border: 1px solid rgba(255,255,255,0.1);
   }
 
-  .side-donate .btn-don:hover {
-    background: var(--orange);
-    color: #fff;
-    box-shadow: 0 0 15px rgba(232,124,30,0.3);
+  .donate-link:hover {
+    background: var(--orange2);
+    box-shadow: 0 0 15px rgba(232,124,30,0.4);
+    transform: translateY(-1px);
   }
 
-  /* Скрываем донат на маленьких экранах, чтобы не перекрывал контент */
-  @media (max-width: 1450px) {
-    .side-donate { display: none; }
+  /* Адаптация для мобильных */
+  @media (max-width: 650px) {
+    .donate-sticky-bar {
+      flex-direction: column;
+      text-align: center;
+      padding: 15px;
+      gap: 12px;
+    }
+    .donate-info {
+      flex-direction: column;
+      gap: 8px;
+    }
+    .donate-link {
+      width: 100%;
+    }
   }
 
   /* ── ШАПКА ── */
@@ -534,14 +558,6 @@
 </style>
 </head>
 <body>
-
-<!-- ══ БЛОК ДОНАТА ══ -->
-<div class="side-donate">
-  <h3>Поддержка проекта</h3>
-  <p>Если вам нравится модпак, вы можете поддержать автора донатом на развитие проекта.</p>
-  <a href="https://wot-lom.com/podderzhka2/" target="_blank" class="btn-don">Поддержать</a>
-</div>
-
 <div class="wrap">
 
   <!-- ══ ШАПКА ══ -->
@@ -562,6 +578,22 @@
     <div class="corner bl"></div>
     <div class="corner br"></div>
     <img src="https://raw.githubusercontent.com/Lom-666/wot-lom.com/refs/heads/main/style__2.jpg" alt="WoT-Lom Modpack">
+  </div>
+
+  <!-- ══ ВИДЖЕТ ДОНАТА (ПОД КАРТИНКОЙ) ══ -->
+  <div class="donate-sticky-bar">
+    <div class="donate-info">
+      <div class="donate-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="var(--orange)" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+      </div>
+      <div class="donate-text-content">
+        <h3>Поддержка проекта</h3>
+        <p>Помогите автору в развитии и обновлении модпака</p>
+      </div>
+    </div>
+    <a href="https://wot-lom.com/podderzhka2/" target="_blank" class="donate-link">Поддержать</a>
   </div>
 
   <!-- ══ О МОДПАКЕ ══ -->
