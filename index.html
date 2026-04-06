@@ -115,27 +115,27 @@
     line-height: 1.4;
   }
 
-  /* КРАСИВАЯ КНОПКА ИЗ ПЕРВОГО ВАРИАНТА */
-  .donate-btn {
+  /* ТОТ САМЫЙ СТИЛЬ КНОПКИ */
+  .btn-don {
     display: block;
     text-align: center;
-    background: linear-gradient(135deg, var(--orange), #b35a00);
-    color: #fff;
+    background: rgba(232, 124, 30, 0.1);
+    border: 1px solid var(--orange);
+    color: var(--orange);
     text-decoration: none;
     font-family: 'Russo One', sans-serif;
     font-size: 13px;
     padding: 12px 24px;
-    border-radius: 3px;
-    transition: transform 0.2s, box-shadow 0.2s;
+    border-radius: 2px;
+    transition: all 0.3s;
     text-transform: uppercase;
-    border: 1px solid rgba(255,255,255,0.1);
     white-space: nowrap;
   }
 
-  .donate-btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 5px 15px rgba(232,124,30,0.4);
-    filter: brightness(1.1);
+  .btn-don:hover {
+    background: var(--orange);
+    color: #fff;
+    box-shadow: 0 0 15px rgba(232,124,30,0.3);
   }
 
   @media (max-width: 650px) {
@@ -149,7 +149,7 @@
       flex-direction: column;
       gap: 10px;
     }
-    .donate-btn {
+    .btn-don {
       width: 100%;
     }
   }
@@ -587,7 +587,7 @@
         <p>Помогите автору в развитии и обновлении модпака</p>
       </div>
     </div>
-    <a href="https://wot-lom.com/podderzhka2/" target="_blank" class="donate-btn">Поддержать</a>
+    <a href="https://wot-lom.com/podderzhka2/" target="_blank" class="btn-don">Поддержать</a>
   </div>
 
   <!-- ══ О МОДПАКЕ ══ -->
