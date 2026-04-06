@@ -1,638 +1,236 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>WoT-Lom — Читерский модпак для World of Tanks</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg:        #080b0f;
-    --bg2:       #0d1117;
-    --bg3:       #131920;
-    --panel:     #111820;
-    --border:    #1e2d3d;
-    --orange:    #e87c1e;
-    --orange2:   #ff9b3a;
-    --gold:      #c8922a;
-    --dim:       #4a5a6a;
-    --text:      #c8d4de;
-    --textdim:   #7a8fa0;
-    --red:       #c0392b;
-    --green:     #27ae60;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WoT-Lom | Читерский модпак для World of Tanks</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&family=Oswald:wght@500;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #0f0f0f;
+            --card-bg: #1a1a1a;
+            --accent-color: #ff8c00; /* Танковый оранжевый */
+            --text-color: #e0e0e0;
+            --text-muted: #aaaaaa;
+        }
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
 
-  html { scroll-behavior: smooth; }
+        .container {
+            max-width: 900px;
+            width: 95%;
+            margin: 40px auto;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border: 1px solid #333;
+        }
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Rajdhani', sans-serif;
-    min-height: 100vh;
-    overflow-x: hidden;
-    position: relative;
-  }
+        .header-img {
+            width: 100%;
+            max-width: 600px;
+            display: block;
+            margin: 0 auto 30px;
+            filter: drop-shadow(0 0 10px rgba(255, 140, 0, 0.3));
+        }
 
-  /* ── ФОНОВАЯ ТЕКСТУРА ── */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image:
-      repeating-linear-gradient(0deg,   transparent, transparent 39px, rgba(30,45,61,.35) 39px, rgba(30,45,61,.35) 40px),
-      repeating-linear-gradient(90deg,  transparent, transparent 39px, rgba(30,45,61,.20) 39px, rgba(30,45,61,.20) 40px);
-    pointer-events: none;
-    z-index: 0;
-  }
+        h1 {
+            font-family: 'Oswald', sans-serif;
+            text-align: center;
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 25px;
+            font-size: 2.2rem;
+        }
 
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(232,124,30,.07) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 0;
-  }
+        .content-text {
+            font-size: 1.05rem;
+            text-align: justify;
+            color: var(--text-color);
+            border-bottom: 1px solid #333;
+            padding-bottom: 30px;
+            margin-bottom: 30px;
+        }
 
-  .wrap {
-    position: relative;
-    z-index: 1;
-    max-width: 860px;
-    margin: 0 auto;
-    padding: 0 20px 60px;
-  }
+        .content-text p {
+            margin-bottom: 15px;
+        }
 
-  /* ── ШАПКА ── */
-  header {
-    text-align: center;
-    padding: 48px 0 32px;
-    position: relative;
-  }
+        .recommendations {
+            background: rgba(255, 140, 0, 0.05);
+            padding: 20px;
+            border-left: 4px solid var(--accent-color);
+            margin-top: 20px;
+            font-style: italic;
+        }
 
-  .header-line {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    justify-content: center;
-    margin-bottom: 6px;
-  }
+        /* Таймер */
+        #timer-container {
+            text-align: center;
+            margin: 40px 0;
+        }
 
-  .header-line span.hl {
-    height: 2px;
-    flex: 1;
-    max-width: 120px;
-    background: linear-gradient(90deg, transparent, var(--orange));
-  }
-  .header-line span.hl.r {
-    background: linear-gradient(90deg, var(--orange), transparent);
-  }
+        .timer-circle {
+            width: 80px;
+            height: 80px;
+            border: 4px solid #333;
+            border-top: 4px solid var(--accent-color);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+            font-size: 1.8rem;
+            font-weight: bold;
+            font-family: 'Oswald', sans-serif;
+            animation: spin 2s linear infinite;
+        }
 
-  .logo-tag {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    color: var(--orange);
-    letter-spacing: 4px;
-    text-transform: uppercase;
-  }
+        @keyframes spin {
+            0% { border-top-color: var(--accent-color); }
+            50% { border-top-color: #ff4500; }
+            100% { border-top-color: var(--accent-color); }
+        }
 
-  h1 {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: clamp(52px, 10vw, 90px);
-    letter-spacing: 6px;
-    line-height: .95;
-    color: #fff;
-    text-shadow: 0 0 40px rgba(232,124,30,.4), 0 2px 0 #000;
-    animation: fadeDown .8s ease both;
-  }
+        .timer-text {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
 
-  h1 em {
-    color: var(--orange);
-    font-style: normal;
-  }
+        /* Кнопки */
+        #download-section {
+            display: none; /* Скрыто изначально */
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+            animation: fadeIn 1s ease-in-out;
+        }
 
-  .subtitle {
-    margin-top: 10px;
-    font-size: 15px;
-    font-weight: 600;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--textdim);
-    animation: fadeDown .9s .1s ease both;
-  }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
 
-  /* ── КАРТИНКА ── */
-  .hero-img-wrap {
-    margin: 32px 0;
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    overflow: hidden;
-    position: relative;
-    animation: fadeUp .8s .2s ease both;
-  }
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            max-width: 500px;
+            padding: 18px;
+            text-decoration: none;
+            color: #000;
+            background: var(--accent-color);
+            font-family: 'Oswald', sans-serif;
+            font-weight: bold;
+            font-size: 1.1rem;
+            border-radius: 6px;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            box-shadow: 0 4px 15px rgba(255, 140, 0, 0.2);
+        }
 
-  .hero-img-wrap::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    box-shadow: inset 0 0 60px rgba(0,0,0,.7);
-    z-index: 1;
-    pointer-events: none;
-  }
+        .btn:hover {
+            background: #ffa500;
+            transform: scale(1.02);
+            box-shadow: 0 6px 20px rgba(255, 140, 0, 0.4);
+        }
 
-  .hero-img-wrap img {
-    width: 100%;
-    display: block;
-    filter: brightness(.92) contrast(1.05);
-  }
+        .btn-mail {
+            background: #005ff9;
+            color: #fff;
+        }
+        .btn-mail:hover {
+            background: #267aff;
+        }
 
-  .corner { position: absolute; width: 20px; height: 20px; z-index: 2; }
-  .corner.tl { top: 0; left: 0;  border-top: 2px solid var(--orange); border-left: 2px solid var(--orange); }
-  .corner.tr { top: 0; right: 0; border-top: 2px solid var(--orange); border-right: 2px solid var(--orange); }
-  .corner.bl { bottom: 0; left: 0;  border-bottom: 2px solid var(--orange); border-left: 2px solid var(--orange); }
-  .corner.br { bottom: 0; right: 0; border-bottom: 2px solid var(--orange); border-right: 2px solid var(--orange); }
+        footer {
+            margin: 40px 0;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            text-align: center;
+        }
 
-  /* ── ОПИСАНИЕ ── */
-  .section {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 4px;
-    padding: 28px 32px;
-    margin-bottom: 24px;
-    animation: fadeUp .8s .3s ease both;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .section::before {
-    content: '';
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 2px;
-    background: linear-gradient(90deg, var(--orange) 0%, transparent 100%);
-  }
-
-  .section-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 22px;
-    letter-spacing: 3px;
-    color: var(--orange);
-    margin-bottom: 14px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .section-title::after {
-    content: '';
-    flex: 1;
-    height: 1px;
-    background: var(--border);
-  }
-
-  .desc-text {
-    font-size: 15px;
-    font-weight: 500;
-    line-height: 1.75;
-    color: var(--text);
-  }
-
-  .desc-text + .desc-text { margin-top: 14px; }
-
-  /* ── ПРЕДУПРЕЖДЕНИЕ ── */
-  .warn-box {
-    background: rgba(192,57,43,.08);
-    border: 1px solid rgba(192,57,43,.4);
-    border-left: 3px solid var(--red);
-    border-radius: 4px;
-    padding: 16px 20px;
-    margin-top: 18px;
-    font-size: 14px;
-    font-weight: 600;
-    color: #e07060;
-    line-height: 1.65;
-  }
-
-  .warn-box strong { color: #ff6b57; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; }
-
-  /* ── СОВЕТЫ ── */
-  .tips-list {
-    list-style: none;
-    margin-top: 10px;
-  }
-
-  .tips-list li {
-    padding: 9px 0 9px 22px;
-    border-bottom: 1px solid var(--border);
-    font-size: 14px;
-    font-weight: 500;
-    line-height: 1.6;
-    color: var(--text);
-    position: relative;
-  }
-
-  .tips-list li:last-child { border-bottom: none; }
-
-  .tips-list li::before {
-    content: '▸';
-    position: absolute;
-    left: 0;
-    color: var(--orange);
-    font-size: 12px;
-  }
-
-  /* ── ТАЙМЕР ── */
-  .timer-section {
-    text-align: center;
-    margin: 32px 0 0;
-    animation: fadeUp .8s .4s ease both;
-  }
-
-  .timer-label {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 12px;
-    letter-spacing: 4px;
-    color: var(--textdim);
-    text-transform: uppercase;
-    margin-bottom: 20px;
-  }
-
-  .timer-ring-wrap {
-    position: relative;
-    width: 120px;
-    height: 120px;
-    margin: 0 auto 18px;
-  }
-
-  .timer-ring-wrap svg {
-    transform: rotate(-90deg);
-    width: 120px;
-    height: 120px;
-  }
-
-  .ring-bg {
-    fill: none;
-    stroke: var(--border);
-    stroke-width: 4;
-  }
-
-  .ring-progress {
-    fill: none;
-    stroke: var(--orange);
-    stroke-width: 4;
-    stroke-linecap: round;
-    stroke-dasharray: 314;
-    stroke-dashoffset: 0;
-    filter: drop-shadow(0 0 6px var(--orange));
-    transition: stroke-dashoffset .9s linear;
-  }
-
-  .timer-number {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 48px;
-    color: #fff;
-    text-shadow: 0 0 20px rgba(232,124,30,.7);
-    letter-spacing: 2px;
-  }
-
-  .timer-hint {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--textdim);
-    letter-spacing: 2px;
-  }
-
-  /* ── КНОПКИ ── */
-  .buttons-wrap {
-    display: none;
-    flex-direction: column;
-    gap: 14px;
-    margin-top: 28px;
-    animation: buttonsReveal .6s ease both;
-  }
-
-  .buttons-wrap.visible {
-    display: flex;
-  }
-
-  @keyframes buttonsReveal {
-    from { opacity: 0; transform: translateY(20px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  .dl-btn {
-    display: flex;
-    align-items: center;
-    gap: 0;
-    text-decoration: none;
-    border-radius: 4px;
-    overflow: hidden;
-    border: 1px solid var(--border);
-    transition: border-color .2s, box-shadow .2s;
-    position: relative;
-  }
-
-  .dl-btn:hover {
-    border-color: var(--orange);
-    box-shadow: 0 0 20px rgba(232,124,30,.25);
-  }
-
-  .dl-btn:hover .btn-icon { background: var(--orange); }
-  .dl-btn:hover .btn-icon svg { transform: translateY(-2px); }
-
-  .btn-icon {
-    width: 58px;
-    min-height: 58px;
-    background: rgba(232,124,30,.15);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    transition: background .2s;
-    border-right: 1px solid var(--border);
-  }
-
-  .btn-icon svg {
-    transition: transform .2s;
-  }
-
-  .btn-body {
-    padding: 12px 20px;
-    flex: 1;
-  }
-
-  .btn-title {
-    font-family: 'Bebas Neue', sans-serif;
-    font-size: 19px;
-    letter-spacing: 2px;
-    color: #fff;
-    display: block;
-  }
-
-  .btn-meta {
-    display: flex;
-    gap: 8px;
-    margin-top: 4px;
-    flex-wrap: wrap;
-  }
-
-  .tag {
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 10px;
-    letter-spacing: 1px;
-    padding: 2px 8px;
-    border-radius: 2px;
-    font-weight: 400;
-    text-transform: uppercase;
-  }
-
-  .tag-service {
-    background: rgba(232,124,30,.12);
-    color: var(--orange2);
-    border: 1px solid rgba(232,124,30,.25);
-  }
-
-  .tag-region {
-    background: rgba(39,174,96,.10);
-    color: #5dba7f;
-    border: 1px solid rgba(39,174,96,.25);
-  }
-
-  .btn-arrow {
-    padding: 0 20px;
-    color: var(--dim);
-    font-size: 20px;
-    flex-shrink: 0;
-  }
-
-  .dl-btn:hover .btn-arrow { color: var(--orange); }
-
-  /* ── ФУТЕР ── */
-  footer {
-    margin-top: 48px;
-    text-align: center;
-    padding-top: 24px;
-    border-top: 1px solid var(--border);
-    font-family: 'Share Tech Mono', monospace;
-    font-size: 11px;
-    color: var(--dim);
-    letter-spacing: 2px;
-    animation: fadeUp .8s .5s ease both;
-  }
-
-  /* ── АНИМАЦИИ ── */
-  @keyframes fadeDown {
-    from { opacity: 0; transform: translateY(-16px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
-
-  /* ── ПУЛЬС ПОСЛЕ ТАЙМЕРА ── */
-  .ring-done .ring-progress {
-    stroke: var(--green);
-    filter: drop-shadow(0 0 8px var(--green));
-  }
-
-  .ring-done .timer-number {
-    color: #6fffaa;
-    text-shadow: 0 0 20px rgba(100,255,160,.8);
-  }
-
-  /* ── АДАПТИВ ── */
-  @media (max-width: 560px) {
-    .section { padding: 20px 18px; }
-    .btn-body { padding: 10px 14px; }
-    .btn-arrow { padding: 0 12px; }
-  }
-</style>
+        /* Адаптивность */
+        @media (max-width: 600px) {
+            h1 { font-size: 1.6rem; }
+            .container { padding: 15px; }
+            .btn { font-size: 0.9rem; padding: 15px; }
+        }
+    </style>
 </head>
 <body>
-<div class="wrap">
 
-  <!-- ══ ШАПКА ══ -->
-  <header>
-    <div class="header-line">
-      <span class="hl"></span>
-      <span class="logo-tag">modpack · world of tanks</span>
-      <span class="hl r"></span>
-    </div>
-    <h1>WoT-<em>Lom</em></h1>
-    <p class="subtitle">Читерский модпак для World of Tanks</p>
-  </header>
+<div class="container">
+    <img src="https://wot-lom.com/wp-content/uploads/2020/10/wot-lom-modpack.png" alt="WoT-Lom Modpack" class="header-img">
+    
+    <h1>WoT-Lom / Читерский модпак для World of Tanks !</h1>
 
-  <!-- ══ ГЛАВНОЕ ИЗОБРАЖЕНИЕ ══ -->
-  <div class="hero-img-wrap">
-    <div class="corner tl"></div>
-    <div class="corner tr"></div>
-    <div class="corner bl"></div>
-    <div class="corner br"></div>
-    <img src="https://wot-lom.com/wp-content/uploads/2020/10/wot-lom-modpack.png" alt="WoT-Lom Modpack">
-  </div>
+    <div class="content-text">
+        <p>Если вы не хотите искать по всему интернету и качать все моды по одному а хотите всё и сразу, то поздравляю, вы нашли то что искали! В сборку WoT-Lom входят все лучшие читы и моды для игры Ворлд оф Танкс, плюс настройки от автора и возможность выбрать разнообразные конфигурации по своему вкусу.</p>
+        
+        <p>В установщике модпака есть вся необходимая информация по модам а так же визуальный просмотр устанавливаемых модов. Опытному пользователю модов, будет сразу понятно по списку модификаций, что в данной сборке находятся все самые необходимые и актуальные моды и читы, для того чтобы насладиться игрой World of tanks.</p>
+        
+        <p>А неопытный пользователь, после первой же установки, сравнив игру с модами/читами из данного мод-пака и без них, надолго затянется в мир танков и намного быстрее наберётся опыта играя с комфортом! Читы для World of Tanks являются уникальными модами (читами) которые дают ряд преимуществ игрокам WoT. Их ещё называют запрещённые моды.</p>
+        
+        <p>За использование читов в игре, конечно можно получить временный бан или лишиться аккаунта. Всегда помните об этом и играйте с умом! Что касается самих читов, то самыми популярными читами являются конечно авто прицелы (Аимы/Аимботы) Сае, Ванга или Шайтан. Так же очень многим игрокам мешает листва, поэтому чит Тундра тоже очень популярен. Читы например позволят вам обнаружить артиллерию и узнать время её перезарядки. Ну или перезарядки всех танков.</p>
+        
+        <p>А если вы хотите поднять ФПС в игре, то в модпаке есть отдельная страница с WoT Tweaker где вы можете выбрав необходимые пункты, отключить разные эффекты такие как: дым, уничтожения танка, отображения облаков, птиц, эффекты выстрелов, тем самым повысив быстродействие игры. Вообще разнообразие чит/модов очень обширно и с каждым разом их становится все больше, они расширяются и улучшаются.</p>
 
-  <!-- ══ О МОДПАКЕ ══ -->
-  <div class="section">
-    <div class="section-title">О модпаке</div>
-    <p class="desc-text">
-      Если вы не хотите искать по всему интернету и качать все моды по одному, а хотите всё и сразу — вы нашли то, что искали. В сборку <strong>WoT-Lom</strong> входят все лучшие читы и моды для World of Tanks, плюс настройки от автора и возможность выбрать разнообразные конфигурации по своему вкусу.
-    </p>
-    <p class="desc-text">
-      В установщике модпака есть вся необходимая информация по модам, а также визуальный просмотр устанавливаемых модификаций. Опытному пользователю сразу будет понятно, что в данной сборке находятся все самые необходимые и актуальные моды и читы. А неопытный игрок после первой же установки, сравнив игру с модами и без, намного быстрее наберётся опыта, играя с комфортом.
-    </p>
-    <p class="desc-text">
-      Самыми популярными читами являются авто-прицелы (<strong>Аимы / Аимботы</strong> Сае, Ванга или Шайтан), чит <strong>Тундра</strong> (убирает листву), возможность обнаружить артиллерию и видеть время перезарядки всех танков. Если хотите поднять FPS — в модпаке есть <strong>WoT Tweaker</strong>, где можно отключить дым, уничтожение танка, облака, птиц и эффекты выстрелов.
-    </p>
-  </div>
-
-  <!-- ══ СОВЕТЫ ══ -->
-  <div class="section">
-    <div class="section-title">Советы при игре с читами</div>
-    <ul class="tips-list">
-      <li>Никогда и никому не показывайте скриншоты и видео со своей игрой, если у вас установлены читы.</li>
-      <li>Если где-то сломался забор или повалилось дерево — смотрите на мини-карту, там всё видно.</li>
-      <li>Если в бою три арты — не нужно вырезать их всех, тем более в каждом бою.</li>
-      <li>Если играете с тундрой — делайте вид, что выцеливаете противника, или реально отъезжайте от куста на 15 м перед выстрелом.</li>
-      <li>Ближе к концу боя помните: за вашей игрой наблюдают. Не берите цель в авто-захват, не наводясь на силуэт — это палево. Установите мод <strong>«Наблюдатель»</strong>.</li>
-    </ul>
-
-    <div class="warn-box">
-      <strong>⚠ Важно помнить</strong><br>
-      Читы для World of Tanks дают ряд преимуществ, однако являются <em>запрещёнными модами</em>. За их использование можно получить временный бан или лишиться аккаунта. Всегда помните об этом и <strong>играйте с умом</strong>.
-    </div>
-  </div>
-
-  <!-- ══ ТАЙМЕР + КНОПКИ ══ -->
-  <div class="timer-section">
-    <p class="timer-label">Кнопки скачивания появятся через</p>
-
-    <div class="timer-ring-wrap" id="timerWrap">
-      <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-        <circle class="ring-bg" cx="60" cy="60" r="50"/>
-        <circle class="ring-progress" id="ringProgress" cx="60" cy="60" r="50"/>
-      </svg>
-      <div class="timer-number" id="timerNum">10</div>
+        <div class="recommendations">
+            <strong>Что нужно помнить при игре с читами:</strong><br>
+            Если говорить о рекомендациях о игре с читами, то можно выделить несколько пунктов. Банально но… скриншоты и видосы со своей игрой, где у вас установлены читы, никогда и никому не показывайте и не отсылайте. Если вы заметили что где то сломался забор или повалилось дерево, не смотрите в ту сторону, а смотрите на мини-карту, потому что там и так всё видно и понятно. Если в игре три арты, не нужно вырезать их всех и тем более делать так в каждом бою. Если играете с тундрой, то хотя бы делайте вид что, что то выцеливате или отъезжаете от куста на 15м. Ближе к концу боя если вы всё еще в строю, всегда держите в голове что за вашей игрой кто-то наблюдает.
+        </div>
     </div>
 
-    <p class="timer-hint" id="timerHint">подождите...</p>
+    <!-- Блок таймера -->
+    <div id="timer-container">
+        <div class="timer-circle" id="seconds">10</div>
+        <div class="timer-text">Ссылки для скачивания появятся через 10 сек.</div>
+    </div>
 
-    <!-- КНОПКИ СКАЧИВАНИЯ -->
-    <div class="buttons-wrap" id="buttonsWrap">
+    <!-- Блок кнопок -->
+    <div id="download-section">
+        <a href="#" class="btn">Скачать WoT-Lom «Google Диск» «RU регион»</a>
+        <a href="#" class="btn btn-mail">Скачать WoT-Lom «Облако Mail» «RU регион»</a>
+        <a href="#" class="btn">Скачать WoT-Lom «Google Диск» «EU регион»</a>
+    </div>
+</div>
 
-      <a href="#" class="dl-btn">
-        <div class="btn-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-            <polyline points="7 10 12 15 17 10"/>
-            <line x1="12" y1="15" x2="12" y2="3"/>
-          </svg>
-        </div>
-        <div class="btn-body">
-          <span class="btn-title">Скачать WoT-Lom</span>
-          <div class="btn-meta">
-            <span class="tag tag-service">Google Диск</span>
-            <span class="tag tag-region">RU регион</span>
-          </div>
-        </div>
-        <div class="btn-arrow">›</div>
-      </a>
-
-      <a href="#" class="dl-btn">
-        <div class="btn-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-            <polyline points="7 10 12 15 17 10"/>
-            <line x1="12" y1="15" x2="12" y2="3"/>
-          </svg>
-        </div>
-        <div class="btn-body">
-          <span class="btn-title">Скачать WoT-Lom</span>
-          <div class="btn-meta">
-            <span class="tag tag-service">Облако Mail</span>
-            <span class="tag tag-region">RU регион</span>
-          </div>
-        </div>
-        <div class="btn-arrow">›</div>
-      </a>
-
-      <a href="#" class="dl-btn">
-        <div class="btn-icon">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-            <polyline points="7 10 12 15 17 10"/>
-            <line x1="12" y1="15" x2="12" y2="3"/>
-          </svg>
-        </div>
-        <div class="btn-body">
-          <span class="btn-title">Скачать WoT-Lom</span>
-          <div class="btn-meta">
-            <span class="tag tag-service">Google Диск</span>
-            <span class="tag tag-region">EU регион</span>
-          </div>
-        </div>
-        <div class="btn-arrow">›</div>
-      </a>
-
-    </div><!-- /buttons-wrap -->
-  </div><!-- /timer-section -->
-
-  <!-- ══ ФУТЕР ══ -->
-  <footer>
-    &copy; WoT-Lom Modpack &nbsp;·&nbsp; World of Tanks / Мир Танков
-  </footer>
-
-</div><!-- /wrap -->
+<footer>
+    &copy; 2024 WoT-Lom.com — Лучшие модификации для World of Tanks
+</footer>
 
 <script>
-(function () {
-  var TOTAL    = 10;
-  var current  = TOTAL;
-  var circumf  = 314; // 2 * pi * 50
+    let timeLeft = 10;
+    const timerElement = document.getElementById('seconds');
+    const timerContainer = document.getElementById('timer-container');
+    const downloadSection = document.getElementById('download-section');
 
-  var numEl    = document.getElementById('timerNum');
-  var ringEl   = document.getElementById('ringProgress');
-  var hintEl   = document.getElementById('timerHint');
-  var wrapEl   = document.getElementById('timerWrap');
-  var btnsEl   = document.getElementById('buttonsWrap');
+    const countdown = setInterval(() => {
+        timeLeft--;
+        timerElement.innerText = timeLeft;
 
-  function update() {
-    current -= 1;
-    numEl.textContent = current > 0 ? current : '✓';
-
-    var fraction = current / TOTAL;
-    ringEl.style.strokeDashoffset = circumf * fraction;
-
-    if (current <= 0) {
-      clearInterval(timer);
-      wrapEl.classList.add('ring-done');
-      hintEl.textContent = 'выберите зеркало для скачивания';
-      hintEl.style.color = '#5dba7f';
-      btnsEl.classList.add('visible');
-    }
-  }
-
-  /* Первый tick сразу задаёт dashoffset=0 без анимации */
-  ringEl.style.transition = 'none';
-  ringEl.style.strokeDashoffset = circumf;
-
-  /* Даём браузеру применить стиль, потом включаем transition */
-  setTimeout(function () {
-    ringEl.style.transition = 'stroke-dashoffset .9s linear';
-    var offset = circumf * ((TOTAL - 1) / TOTAL);
-    ringEl.style.strokeDashoffset = offset;
-  }, 50);
-
-  var timer = setInterval(update, 1000);
-})();
+        if (timeLeft <= 0) {
+            clearInterval(countdown);
+            timerContainer.style.display = 'none';
+            downloadSection.style.display = 'flex';
+        }
+    }, 1000);
 </script>
+
 </body>
 </html>
