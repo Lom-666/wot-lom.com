@@ -66,6 +66,70 @@
     padding: 0 20px 60px;
   }
 
+  /* ── БЛОК ДОНАТА (СПРАВА) ── */
+  .side-donate {
+    position: fixed;
+    top: 180px;
+    left: calc(50% + 500px);
+    width: 240px;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 20px;
+    z-index: 100;
+    animation: fadeUp .8s .4s ease both;
+  }
+
+  .side-donate::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: var(--orange);
+  }
+
+  .side-donate h3 {
+    font-family: 'Russo One', sans-serif;
+    font-size: 15px;
+    color: var(--orange);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+
+  .side-donate p {
+    font-size: 13px;
+    line-height: 1.5;
+    color: var(--textdim);
+    margin-bottom: 15px;
+  }
+
+  .side-donate .btn-don {
+    display: block;
+    text-align: center;
+    background: rgba(232,124,30,0.1);
+    border: 1px solid var(--orange);
+    color: var(--orange);
+    text-decoration: none;
+    font-family: 'Russo One', sans-serif;
+    font-size: 13px;
+    padding: 10px;
+    border-radius: 2px;
+    transition: all 0.3s;
+    text-transform: uppercase;
+  }
+
+  .side-donate .btn-don:hover {
+    background: var(--orange);
+    color: #fff;
+    box-shadow: 0 0 15px rgba(232,124,30,0.3);
+  }
+
+  /* Скрываем донат на маленьких экранах, чтобы не перекрывал контент */
+  @media (max-width: 1450px) {
+    .side-donate { display: none; }
+  }
+
   /* ── ШАПКА ── */
   header {
     text-align: center;
@@ -470,6 +534,14 @@
 </style>
 </head>
 <body>
+
+<!-- ══ БЛОК ДОНАТА ══ -->
+<div class="side-donate">
+  <h3>Поддержка проекта</h3>
+  <p>Если вам нравится модпак, вы можете поддержать автора донатом на развитие проекта.</p>
+  <a href="https://wot-lom.com/podderzhka2/" target="_blank" class="btn-don">Поддержать</a>
+</div>
+
 <div class="wrap">
 
   <!-- ══ ШАПКА ══ -->
