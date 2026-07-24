@@ -66,10 +66,98 @@
     padding: 0 20px 60px;
   }
 
+  /* ── БЛОК ДОНАТА (ПОД КАРТИНКОЙ) ── */
+  .donate-box {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--orange);
+    border-radius: 4px;
+    padding: 20px 25px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    animation: fadeUp .8s .3s ease both;
+  }
+
+  .donate-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .donate-icon {
+    background: rgba(232,124,30,0.1);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 1px solid rgba(232,124,30,0.3);
+  }
+
+  .donate-text-content h3 {
+    font-family: 'Russo One', sans-serif;
+    font-size: 15px;
+    color: var(--orange);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+  }
+
+  .donate-text-content p {
+    font-size: 13px;
+    color: var(--textdim);
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  /* ТОТ САМЫЙ СТИЛЬ КНОПКИ */
+  .btn-don {
+    display: block;
+    text-align: center;
+    background: rgba(232, 124, 30, 0.1);
+    border: 1px solid var(--orange);
+    color: var(--orange);
+    text-decoration: none;
+    font-family: 'Russo One', sans-serif;
+    font-size: 13px;
+    padding: 12px 24px;
+    border-radius: 2px;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .btn-don:hover {
+    background: var(--orange);
+    color: #fff;
+    box-shadow: 0 0 15px rgba(232,124,30,0.3);
+  }
+
+  @media (max-width: 650px) {
+    .donate-box {
+      flex-direction: column;
+      text-align: center;
+      padding: 20px;
+      gap: 15px;
+    }
+    .donate-info {
+      flex-direction: column;
+      gap: 10px;
+    }
+    .btn-don {
+      width: 100%;
+    }
+  }
+
   /* ── ШАПКА ── */
   header {
     text-align: center;
-    padding: 48px 0 16px;
+    padding: 48px 0 32px;
     position: relative;
   }
 
@@ -124,48 +212,9 @@
     animation: fadeDown .9s .1s ease both;
   }
 
-  /* ── МЕНЮ НАВИГАЦИИ (НОВОЕ) ── */
-  .header-nav {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 12px;
-    flex-wrap: wrap;
-    margin: 24px 0 10px;
-    animation: fadeUp .8s .15s ease both;
-  }
-
-  .nav-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--panel);
-    border: 1px solid var(--border);
-    color: var(--text);
-    text-decoration: none;
-    font-family: 'Exo 2', sans-serif;
-    font-size: 13px;
-    font-weight: 700;
-    padding: 10px 18px;
-    border-radius: 4px;
-    transition: all 0.25s ease;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    text-align: center;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
-  }
-
-  .nav-btn:hover {
-    border-color: var(--orange);
-    color: #fff;
-    background: rgba(232, 124, 30, 0.15);
-    box-shadow: 0 0 15px rgba(232, 124, 30, 0.3);
-    transform: translateY(-2px);
-  }
-
   /* ── КАРТИНКА ── */
   .hero-img-wrap {
-    margin: 24px auto 32px;
+    margin: 32px auto;
     border: 1px solid var(--border);
     border-radius: 4px;
     overflow: hidden;
@@ -194,96 +243,6 @@
   .corner.tr { top: 0; right: 0; border-top: 2px solid var(--orange); border-right: 2px solid var(--orange); }
   .corner.bl { bottom: 0; left: 0;  border-bottom: 2px solid var(--orange); border-left: 2px solid var(--orange); }
   .corner.br { bottom: 0; right: 0; border-bottom: 2px solid var(--orange); border-right: 2px solid var(--orange); }
-
-  /* ── БЛОК ДОНАТА (ПОД КАРТИНКОЙ) ── */
-  .donate-box {
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-top: 2px solid var(--orange);
-    border-radius: 4px;
-    padding: 20px 25px;
-    margin-bottom: 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 20px;
-    animation: fadeUp .8s .3s ease both;
-  }
-
-  .donate-info {
-    display: flex;
-    align-items: center;
-    gap: 15px;
-  }
-
-  .donate-icon {
-    background: rgba(232,124,30,0.1);
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-shrink: 0;
-    border: 1px solid rgba(232,124,30,0.3);
-  }
-
-  .donate-text-content h3 {
-    font-family: 'Russo One', sans-serif;
-    font-size: 15px;
-    color: var(--orange);
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    margin-bottom: 2px;
-  }
-
-  .donate-text-content p {
-    font-size: 13px;
-    color: var(--textdim);
-    font-weight: 500;
-    line-height: 1.4;
-  }
-
-  .btn-don {
-    display: block;
-    text-align: center;
-    background: rgba(232, 124, 30, 0.1);
-    border: 1px solid var(--orange);
-    color: var(--orange);
-    text-decoration: none;
-    font-family: 'Russo One', sans-serif;
-    font-size: 13px;
-    padding: 12px 24px;
-    border-radius: 2px;
-    transition: all 0.3s;
-    text-transform: uppercase;
-    white-space: nowrap;
-  }
-
-  .btn-don:hover {
-    background: var(--orange);
-    color: #fff;
-    box-shadow: 0 0 15px rgba(232,124,30,0.3);
-  }
-
-  @media (max-width: 650px) {
-    .donate-box {
-      flex-direction: column;
-      text-align: center;
-      padding: 20px;
-      gap: 15px;
-    }
-    .donate-info {
-      flex-direction: column;
-      gap: 10px;
-    }
-    .btn-don {
-      width: 100%;
-    }
-    .nav-btn {
-      width: 100%;
-    }
-  }
 
   /* ── СЕКЦИИ ── */
   .section {
@@ -568,6 +527,38 @@
     animation: fadeUp .8s .5s ease both;
   }
 
+  /* ── НАВИГАЦИОННОЕ МЕНЮ ── */
+  .site-nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 28px;
+    animation: fadeDown .8s .15s ease both;
+  }
+
+  .site-nav a {
+    font-family: 'Russo One', sans-serif;
+    font-size: 11px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--orange);
+    border: 1px solid rgba(232,124,30,.4);
+    background: rgba(232,124,30,.06);
+    padding: 8px 16px;
+    border-radius: 2px;
+    transition: background .2s, border-color .2s, color .2s, box-shadow .2s;
+    white-space: nowrap;
+  }
+
+  .site-nav a:hover {
+    background: var(--orange);
+    border-color: var(--orange);
+    color: #fff;
+    box-shadow: 0 0 14px rgba(232,124,30,.35);
+  }
+
   /* ── АНИМАЦИИ ── */
   @keyframes fadeDown {
     from { opacity: 0; transform: translateY(-16px); }
@@ -606,11 +597,11 @@
     <p class="subtitle">Читерский модпак для World of Tanks</p>
   </header>
 
-  <!-- ══ МЕНЮ НАВИГАЦИИ ══ -->
-  <nav class="header-nav">
-    <a href="#" class="nav-btn">Tankalomыч / Модпак для Мир Танков</a>
-    <a href="#" class="nav-btn">Модпак для теста World of Tanks и Мир Танков</a>
-    <a href="#" class="nav-btn">Читы по отдельности</a>
+  <!-- ══ НАВИГАЦИЯ ══ -->
+  <nav class="site-nav">
+    <a href="#">Tankalomыч · Мир Танков</a>
+    <a href="#">Модпак для тест-сервера</a>
+    <a href="#">Читы по отдельности</a>
   </nav>
 
   <!-- ══ ГЛАВНОЕ ИЗОБРАЖЕНИЕ ══ -->
