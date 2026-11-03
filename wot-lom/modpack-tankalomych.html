@@ -1,0 +1,990 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tankalomыч — Легальный модпак для Мир Танков</title>
+<link rel="icon" type="image/png" href="images/logo_from.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Exo+2:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #080b0f;
+    --bg2:       #0d1117;
+    --bg3:       #131920;
+    --panel:     #111820;
+    --border:    #1e2d3d;
+    --orange:    #e87c1e;
+    --orange2:   #ff9b3a;
+    --gold:      #c8922a;
+    --dim:       #4a5a6a;
+    --text:      #c8d4de;
+    --textdim:   #7a8fa0;
+    --red:       #c0392b;
+    --green:     #27ae60;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Exo 2', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* ── ФОНОВАЯ ТЕКСТУРА ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(0deg,   transparent, transparent 39px, rgba(30,45,61,.35) 39px, rgba(30,45,61,.35) 40px),
+      repeating-linear-gradient(90deg,  transparent, transparent 39px, rgba(30,45,61,.20) 39px, rgba(30,45,61,.20) 40px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(232,124,30,.07) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── ГЛАВНАЯ СЕТКА ── */
+  .layout-container {
+    position: relative;
+    z-index: 1;
+    max-width: 1540px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 24px;
+    padding: 0 16px;
+  }
+
+  /* ── БОКОВЫЕ ПАНЕЛИ ── */
+  .side-column {
+    width: 220px;
+    flex-shrink: 0;
+    margin-top: 140px;
+    position: sticky;
+    top: calc(50vh - 290px);
+    z-index: 5;
+    animation: fadeUp .8s .3s ease both;
+  }
+
+  .partner-widget {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--orange);
+    border-radius: 4px;
+    min-height: 580px;
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    text-align: center;
+  }
+
+  .partner-placeholder {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--dim);
+    text-transform: uppercase;
+    line-height: 1.6;
+    border: 1px dashed var(--border);
+    padding: 24px 12px;
+    width: 100%;
+    border-radius: 3px;
+  }
+
+  /* Перенос вниз на экранах < 1400px */
+  @media (max-width: 1400px) {
+    .layout-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      max-width: 960px;
+      gap: 20px;
+    }
+
+    .wrap {
+      grid-column: 1 / -1;
+      grid-row: 1;
+      padding-bottom: 20px;
+    }
+
+    .side-column {
+      position: static;
+      margin-top: 0;
+      width: 100%;
+    }
+
+    .side-left {
+      grid-column: 1;
+      grid-row: 2;
+    }
+
+    .side-right {
+      grid-column: 2;
+      grid-row: 2;
+    }
+
+    .partner-widget {
+      min-height: 220px;
+    }
+  }
+
+  @media (max-width: 650px) {
+    .layout-container {
+      grid-template-columns: 1fr;
+    }
+    .side-left {
+      grid-column: 1;
+      grid-row: 2;
+    }
+    .side-right {
+      grid-column: 1;
+      grid-row: 3;
+    }
+  }
+
+  /* ── ЦЕНТРАЛЬНЫЙ БЛОК ── */
+  .wrap {
+    flex: 1;
+    max-width: 960px;
+    min-width: 0;
+    margin: 0 auto;
+    padding: 0 4px 60px;
+  }
+
+  /* ── ШАПКА ── */
+  header {
+    text-align: center;
+    padding: 42px 0 26px;
+    position: relative;
+  }
+
+  .header-line {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    justify-content: center;
+    margin-bottom: 6px;
+  }
+
+  .header-line span.hl {
+    height: 2px;
+    flex: 1;
+    max-width: 120px;
+    background: linear-gradient(90deg, transparent, var(--orange));
+  }
+  .header-line span.hl.r {
+    background: linear-gradient(90deg, var(--orange), transparent);
+  }
+
+  .logo-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--orange);
+    letter-spacing: 4px;
+    text-transform: uppercase;
+  }
+
+  .logo-link {
+    text-decoration: none;
+    color: inherit;
+    display: inline-block;
+  }
+
+  h1 {
+    font-family: 'Russo One', sans-serif;
+    font-size: clamp(42px, 8vw, 78px);
+    letter-spacing: 3px;
+    line-height: 1;
+    color: #fff;
+    text-shadow: 0 0 35px rgba(232,124,30,.4), 0 2px 0 #000;
+    animation: fadeDown .8s ease both;
+  }
+
+  h1 em {
+    color: var(--orange);
+    font-style: normal;
+  }
+
+  .subtitle {
+    margin-top: 10px;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--textdim);
+    animation: fadeDown .9s .1s ease both;
+  }
+
+  /* ── НАВИГАЦИОННОЕ МЕНЮ (КОМПАКТНОЕ В 1 РЯД) ── */
+  .site-nav {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 26px;
+    animation: fadeDown .8s .15s ease both;
+  }
+
+  .site-nav a {
+    font-family: 'Russo One', sans-serif;
+    font-size: 11.5px;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--orange);
+    border: 1px solid rgba(232,124,30,.4);
+    background: rgba(232,124,30,.06);
+    padding: 9px 12px;
+    border-radius: 2px;
+    transition: all .25s ease;
+    white-space: nowrap;
+    display: inline-block;
+    text-align: center;
+  }
+
+  .site-nav a:hover,
+  .site-nav a.active {
+    background: var(--orange);
+    border-color: var(--orange);
+    color: #fff;
+    box-shadow: 0 0 14px rgba(232,124,30,.35);
+  }
+
+  @media (max-width: 880px) {
+    .site-nav {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      max-width: 580px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+  }
+
+  @media (max-width: 460px) {
+    .site-nav {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  /* ── КАРТИНКА ── */
+  .hero-img-wrap {
+    margin: 24px auto 28px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    animation: fadeUp .8s .2s ease both;
+    max-width: 620px;
+  }
+
+  .hero-img-wrap::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    box-shadow: inset 0 0 50px rgba(0,0,0,.7);
+    z-index: 1;
+    pointer-events: none;
+  }
+
+  .hero-img-wrap img {
+    width: 100%;
+    display: block;
+    filter: brightness(.92) contrast(1.05);
+  }
+
+  .corner { position: absolute; width: 18px; height: 18px; z-index: 2; }
+  .corner.tl { top: 0; left: 0;  border-top: 2px solid var(--orange); border-left: 2px solid var(--orange); }
+  .corner.tr { top: 0; right: 0; border-top: 2px solid var(--orange); border-right: 2px solid var(--orange); }
+  .corner.bl { bottom: 0; left: 0;  border-bottom: 2px solid var(--orange); border-left: 2px solid var(--orange); }
+  .corner.br { bottom: 0; right: 0; border-bottom: 2px solid var(--orange); border-right: 2px solid var(--orange); }
+
+  /* ── БЛОК ДОНАТА ── */
+  .donate-box {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--orange);
+    border-radius: 4px;
+    padding: 20px 24px;
+    margin-bottom: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    animation: fadeUp .8s .25s ease both;
+  }
+
+  .donate-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+
+  .donate-icon {
+    background: rgba(232,124,30,0.1);
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border: 1px solid rgba(232,124,30,0.3);
+    box-shadow: 0 0 10px rgba(232,124,30,0.1);
+  }
+
+  .donate-icon svg {
+    animation: heartBeat 2.4s infinite ease-in-out;
+    transform-origin: center;
+  }
+
+  @keyframes heartBeat {
+    0%, 100% {
+      transform: scale(1);
+      filter: drop-shadow(0 0 0 rgba(232,124,30,0));
+    }
+    12% {
+      transform: scale(1.22);
+      filter: drop-shadow(0 0 8px rgba(232,124,30,0.9));
+    }
+    24% {
+      transform: scale(1.04);
+    }
+    36% {
+      transform: scale(1.26);
+      filter: drop-shadow(0 0 10px rgba(255,155,58,1));
+    }
+    50% {
+      transform: scale(1);
+      filter: drop-shadow(0 0 0 rgba(232,124,30,0));
+    }
+  }
+
+  .donate-text-content h3 {
+    font-family: 'Russo One', sans-serif;
+    font-size: 15px;
+    color: var(--orange);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 2px;
+  }
+
+  .donate-text-content p {
+    font-size: 13px;
+    color: var(--textdim);
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .btn-don {
+    display: block;
+    text-align: center;
+    background: rgba(232, 124, 30, 0.12);
+    border: 1px solid var(--orange);
+    color: var(--orange);
+    text-decoration: none;
+    font-family: 'Russo One', sans-serif;
+    font-size: 13px;
+    padding: 12px 24px;
+    border-radius: 2px;
+    transition: all 0.3s;
+    text-transform: uppercase;
+    white-space: nowrap;
+    position: relative;
+    overflow: hidden;
+    animation: btnAmbientGlow 3s infinite ease-in-out;
+  }
+
+  .btn-don::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -120%;
+    width: 60px;
+    height: 200%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.4),
+      rgba(255, 255, 255, 0.8),
+      rgba(255, 255, 255, 0.4),
+      transparent
+    );
+    transform: rotate(25deg);
+    animation: btnShimmer 5s infinite ease-in-out;
+    pointer-events: none;
+  }
+
+  @keyframes btnShimmer {
+    0%, 20% {
+      left: -120%;
+    }
+    80%, 100% {
+      left: 180%;
+    }
+  }
+
+  @keyframes btnAmbientGlow {
+    0%, 100% {
+      box-shadow: 0 0 5px rgba(232,124,30,0.15);
+      border-color: var(--orange);
+    }
+    50% {
+      box-shadow: 0 0 15px rgba(232,124,30,0.45), inset 0 0 8px rgba(232,124,30,0.2);
+      border-color: var(--orange2);
+    }
+  }
+
+  .btn-don:hover {
+    background: var(--orange);
+    color: #fff;
+    box-shadow: 0 0 20px rgba(232,124,30,0.6);
+  }
+
+  @media (max-width: 650px) {
+    .donate-box {
+      flex-direction: column;
+      text-align: center;
+      padding: 18px;
+      gap: 14px;
+    }
+    .donate-info {
+      flex-direction: column;
+      gap: 10px;
+    }
+    .btn-don {
+      width: 100%;
+    }
+  }
+
+  /* ── СЕКЦИИ ── */
+  .section {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 26px 30px;
+    margin-bottom: 24px;
+    animation: fadeUp .8s .3s ease both;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--orange) 0%, transparent 100%);
+  }
+
+  .section-title {
+    font-family: 'Russo One', sans-serif;
+    font-size: 17px;
+    letter-spacing: 1.5px;
+    color: var(--orange);
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  .desc-text {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.7;
+    color: var(--text);
+  }
+
+  .desc-text + .desc-text { margin-top: 12px; }
+
+  /* ── БЛОК БЕЗОПАСНОСТИ (ЛЕГАЛЬНЫЙ МОДПАК) ── */
+  .safe-box {
+    background: rgba(39,174,96,.08);
+    border: 1px solid rgba(39,174,96,.4);
+    border-left: 3px solid var(--green);
+    border-radius: 4px;
+    padding: 16px 20px;
+    margin-top: 18px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #8edebb;
+    line-height: 1.65;
+  }
+
+  .safe-box strong {
+    color: #2ecc71;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  /* ── СПИСОК ПРЕИМУЩЕСТВ ── */
+  .tips-list {
+    list-style: none;
+    margin-top: 10px;
+  }
+
+  .tips-list li {
+    padding: 9px 0 9px 22px;
+    border-bottom: 1px solid var(--border);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.65;
+    color: var(--text);
+    position: relative;
+  }
+
+  .tips-list li:last-child { border-bottom: none; }
+
+  .tips-list li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: var(--green);
+    font-weight: bold;
+    font-size: 13px;
+  }
+
+  /* ── ТАЙМЕР ── */
+  .timer-section {
+    text-align: center;
+    margin-bottom: 24px;
+    animation: fadeUp .8s .35s ease both;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 28px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .timer-section::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--orange) 0%, transparent 100%);
+  }
+
+  .timer-label {
+    font-family: 'Exo 2', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 3px;
+    color: var(--textdim);
+    text-transform: uppercase;
+    margin-bottom: 22px;
+  }
+
+  .timer-ring-wrap {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 18px;
+  }
+
+  .timer-ring-wrap svg {
+    transform: rotate(-90deg);
+    width: 120px;
+    height: 120px;
+  }
+
+  .ring-bg {
+    fill: none;
+    stroke: var(--border);
+    stroke-width: 4;
+  }
+
+  .ring-progress {
+    fill: none;
+    stroke: var(--orange);
+    stroke-width: 4;
+    stroke-linecap: round;
+    stroke-dasharray: 314;
+    stroke-dashoffset: 0;
+    filter: drop-shadow(0 0 6px var(--orange));
+    transition: stroke-dashoffset .9s linear;
+  }
+
+  .timer-number {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Russo One', sans-serif;
+    font-size: 48px;
+    color: #fff;
+    text-shadow: 0 0 20px rgba(232,124,30,.7);
+    letter-spacing: 2px;
+  }
+
+  .timer-hint {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--textdim);
+    letter-spacing: 2px;
+  }
+
+  /* ── ОДНА КНОПКА СКАЧИВАНИЯ ── */
+  .buttons-wrap {
+    display: none;
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 28px;
+    animation: buttonsReveal .6s ease both;
+  }
+
+  .buttons-wrap.visible { display: flex; }
+
+  @keyframes buttonsReveal {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .dl-btn {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    border-radius: 4px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    transition: border-color .2s, box-shadow .2s;
+    position: relative;
+    background: rgba(255,255,255,0.01);
+  }
+
+  .dl-btn:hover {
+    border-color: var(--orange);
+    box-shadow: 0 0 20px rgba(232,124,30,.25);
+  }
+
+  .dl-btn:hover .btn-icon { background: var(--orange); }
+  .dl-btn:hover .btn-icon svg { transform: translateY(-2px); }
+
+  .btn-icon {
+    width: 64px;
+    min-height: 64px;
+    background: rgba(232,124,30,.15);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background .2s;
+    border-right: 1px solid var(--border);
+  }
+
+  .btn-icon svg { transition: transform .2s; }
+
+  .btn-body {
+    padding: 14px 24px;
+    flex: 1;
+    text-align: left;
+  }
+
+  .btn-title {
+    font-family: 'Russo One', sans-serif;
+    font-size: 17px;
+    letter-spacing: 1px;
+    color: #fff;
+    display: block;
+  }
+
+  .btn-meta {
+    display: flex;
+    gap: 8px;
+    margin-top: 6px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1px;
+    padding: 2px 9px;
+    border-radius: 2px;
+    font-weight: 400;
+    text-transform: uppercase;
+  }
+
+  .tag-service {
+    background: rgba(232,124,30,.12);
+    color: var(--orange2);
+    border: 1px solid rgba(232,124,30,.25);
+  }
+
+  .tag-region {
+    background: rgba(39,174,96,.10);
+    color: #5dba7f;
+    border: 1px solid rgba(39,174,96,.25);
+  }
+
+  .btn-arrow {
+    padding: 0 22px;
+    color: var(--dim);
+    font-size: 22px;
+    flex-shrink: 0;
+  }
+
+  .dl-btn:hover .btn-arrow { color: var(--orange); }
+
+  .ring-done .ring-progress {
+    stroke: var(--green);
+    filter: drop-shadow(0 0 8px var(--green));
+  }
+
+  .ring-done .timer-number {
+    color: #6fffaa;
+    text-shadow: 0 0 20px rgba(100,255,160,.8);
+  }
+
+  /* ── ФУТЕР ── */
+  footer {
+    margin-top: 36px;
+    text-align: center;
+    padding-top: 22px;
+    border-top: 1px solid var(--border);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--dim);
+    letter-spacing: 2px;
+    animation: fadeUp .8s .45s ease both;
+  }
+
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+</style>
+</head>
+<body>
+
+<div class="layout-container">
+
+  <!-- ══ ЛЕВЫЙ БЛОК ══ -->
+  <aside class="side-column side-left">
+    <div class="partner-widget">
+      <div class="corner tl"></div>
+      <div class="corner tr"></div>
+      <div class="corner bl"></div>
+      <div class="corner br"></div>
+      
+      <div class="partner-placeholder">
+        РЕКЛАМНЫЙ БЛОК<br>160 × 600<br>(ЛЕВЫЙ)
+      </div>
+    </div>
+  </aside>
+
+  <!-- ══ ЦЕНТРАЛЬНАЯ ЧАСТЬ ══ -->
+  <main class="wrap">
+
+    <!-- ШАПКА (Клик по лого ведет на Главную) -->
+    <header>
+      <div class="header-line">
+        <span class="hl"></span>
+        <span class="logo-tag">legal modpack · мир танков</span>
+        <span class="hl r"></span>
+      </div>
+      <a href="../index.html" class="logo-link">
+        <h1>Tankal<em>omыч</em></h1>
+      </a>
+      <p class="subtitle">Легальный модпак для «Мир Танков»</p>
+    </header>
+
+    <!-- МЕНЮ (Tankalomыч активен) -->
+    <nav class="site-nav">
+      <a href="modpack-wot-lom.html">WoT-Lom Модпак (RU/EU)</a>
+      <a href="modpack-tankalomych.html" class="active">Tankalomыч · Мир Танков</a>
+      <a href="modpack-common-test.html">Модпак для тест-сервера</a>
+      <a href="trial-cheats.html">Читы по отдельности</a>
+    </nav>
+
+    <!-- ГЛАВНОЕ ИЗОБРАЖЕНИЕ -->
+    <div class="hero-img-wrap">
+      <div class="corner tl"></div>
+      <div class="corner tr"></div>
+      <div class="corner bl"></div>
+      <div class="corner br"></div>
+      <img src="images/modpack-tankalomych.png" alt="Модпак Tankalomыч">
+    </div>
+
+    <!-- ПОДДЕРЖКА ПРОЕКТА -->
+    <div class="donate-box">
+      <div class="donate-info">
+        <div class="donate-icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="var(--orange)" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+        </div>
+        <div class="donate-text-content">
+          <h3>Поддержка проекта</h3>
+          <p>Помогите автору в развитии и обновлении модпака</p>
+        </div>
+      </div>
+      <a href="https://alfaonline.org/public/mrv2/Pxt6yh1oDi" target="_blank" class="btn-don">Поддержать</a>
+    </div>
+
+    <!-- О МОДПАКЕ -->
+    <div class="section">
+      <div class="section-title">О модпаке Tankalomыч</div>
+      <p class="desc-text">
+        Сборка <strong>Tankalomыч</strong> создана специально для игроков клиента «Мир Танков» (Lesta Games). В данный модпак входят исключительно <strong>официально разрешённые модификации</strong>, которые делают игру комфортнее, информативнее и приятнее без риска блокировок.
+      </p>
+      <p class="desc-text">
+        Удобный инсталлятор с функцией предварительного просмотра каждого компонента позволяет гибко собрать интерфейс под себя: информативные прицелы с расширенными сведениями, калькуляторы бронепробития, панели полученного и нанесённого урона, умная мини-карта, а также подробная ангарная статистика сессий и прокачки.
+      </p>
+      <p class="desc-text">
+        Для владельцев слабых компьютеров в модпак интегрированы утилиты оптимизации графики и отключения лишних спецэффектов (дым, пыль, облака, лишние взрывы), что обеспечивает максимальный и стабильный прирост FPS в бою.
+      </p>
+
+      <div class="safe-box">
+        <strong>✓ 100% Легально и безопасно</strong><br>
+        Модпак полностью чист от запрещённых модификаций и читов. Все входящие в сборку моды строго соответствуют правилам игры «Мир Танков». Ваш игровой аккаунт находится в полной безопасности.
+      </div>
+    </div>
+
+    <!-- ТАЙМЕР + 1 КНОПКА СКАЧИВАНИЯ -->
+    <div class="timer-section">
+      <p class="timer-label">Кнопка скачивания появится через</p>
+
+      <div class="timer-ring-wrap" id="timerWrap">
+        <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
+          <circle class="ring-bg" cx="60" cy="60" r="50"/>
+          <circle class="ring-progress" id="ringProgress" cx="60" cy="60" r="50"/>
+        </svg>
+        <div class="timer-number" id="timerNum">17</div>
+      </div>
+
+      <p class="timer-hint" id="timerHint">подождите...</p>
+
+      <!-- ОДНА КНОПКА СКАЧИВАНИЯ -->
+      <div class="buttons-wrap" id="buttonsWrap">
+
+        <a href="https://drive.google.com/file/d/1dDCyIJuSLn21bYBhb-Gr3STucy9Y986f/view?usp=drive_link" target="_blank" class="dl-btn">
+          <div class="btn-icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+              <polyline points="7 10 12 15 17 10"/>
+              <line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+          </div>
+          <div class="btn-body">
+            <span class="btn-title">Скачать модпак Tankalomыч</span>
+            <div class="btn-meta">
+              <span class="tag tag-service">Google Диск</span>
+              <span class="tag tag-region">Мир Танков (RU)</span>
+            </div>
+          </div>
+          <div class="btn-arrow">›</div>
+        </a>
+
+      </div>
+    </div>
+
+    <!-- ПРЕИМУЩЕСТВА СБОРКИ -->
+    <div class="section">
+      <div class="section-title">Преимущества и состав сборки</div>
+      <p class="desc-text" style="margin-bottom:12px;">
+        Основные особенности модпака Tankalomыч:
+      </p>
+      <ul class="tips-list">
+        <li><strong>Чистота и прозрачность:</strong> отсутствие запрещённых функций и полная совместимость с серверами Lesta Games.</li>
+        <li><strong>Боевой комфорт:</strong> удобные сетки прицелов, индикаторы направления обстрела и информативный лог урона.</li>
+        <li><strong>Ангарные модули:</strong> расширенные фильтры карусели танков, расчёт отметок на стволах и сессионная статистика.</li>
+        <li><strong>Повышение производительности:</strong> гибкий твикер для оптимизации ресурсов ПК и стабилизации кадров (FPS).</li>
+        <li><strong>Регулярные обновления:</strong> адаптация модпака под каждый микропатч и глобальное обновление игры.</li>
+      </ul>
+    </div>
+
+    <!-- ФУТЕР -->
+    <footer>
+      &copy; Tankalomыч Modpack &nbsp;·&nbsp; Мир Танков (Lesta Games)
+    </footer>
+
+  </main>
+
+  <!-- ══ ПРАВЫЙ БЛОК ══ -->
+  <aside class="side-column side-right">
+    <div class="partner-widget">
+      <div class="corner tl"></div>
+      <div class="corner tr"></div>
+      <div class="corner bl"></div>
+      <div class="corner br"></div>
+
+      <div class="partner-placeholder">
+        РЕКЛАМНЫЙ БЛОК<br>160 × 600<br>(ПРАВЫЙ)
+      </div>
+    </div>
+  </aside>
+
+</div>
+
+<script>
+(function () {
+  var TOTAL   = 17;
+  var current = TOTAL;
+  var circumf = 314;
+
+  var numEl  = document.getElementById('timerNum');
+  var ringEl = document.getElementById('ringProgress');
+  var hintEl = document.getElementById('timerHint');
+  var wrapEl = document.getElementById('timerWrap');
+  var btnsEl = document.getElementById('buttonsWrap');
+
+  function update() {
+    current -= 1;
+    numEl.textContent = current > 0 ? current : '✓';
+    ringEl.style.strokeDashoffset = circumf * (current / TOTAL);
+
+    if (current <= 0) {
+      clearInterval(timer);
+      wrapEl.classList.add('ring-done');
+      hintEl.textContent = 'ссылка для скачивания готова';
+      hintEl.style.color = '#5dba7f';
+      btnsEl.classList.add('visible');
+    }
+  }
+
+  ringEl.style.transition = 'none';
+  ringEl.style.strokeDashoffset = circumf;
+
+  setTimeout(function () {
+    ringEl.style.transition = 'stroke-dashoffset .9s linear';
+    ringEl.style.strokeDashoffset = circumf * ((TOTAL - 1) / TOTAL);
+  }, 50);
+
+  var timer = setInterval(update, 1000);
+})();
+</script>
+</body>
+</html>
