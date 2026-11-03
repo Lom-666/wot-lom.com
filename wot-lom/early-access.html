@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WoT-Lom — Ранний доступ</title>
+<link rel="icon" type="image/png" href="images/logo_from.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Exo+2:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #080b0f;
+    --panel:     #111820;
+    --border:    #1e2d3d;
+    --orange:    #e87c1e;
+    --orange2:   #ff9b3a;
+    --text:      #c8d4de;
+    --textdim:   #7a8fa0;
+    --mint:      #00ffae;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Exo 2', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+    text-align: center;
+  }
+
+  /* ── ФОНОВАЯ СЕТКА И СВЕЧЕНИЕ ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(0deg,   transparent, transparent 39px, rgba(30,45,61,.35) 39px, rgba(30,45,61,.35) 40px),
+      repeating-linear-gradient(90deg,  transparent, transparent 39px, rgba(30,45,61,.20) 39px, rgba(30,45,61,.20) 40px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(232,124,30,.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── ОСНОВНОЙ КОНТЕЙНЕР (СДЕЛАЛИ ПОШИРЕ: 980px) ── */
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 40px 20px 60px;
+  }
+
+  /* ── ЗАГОЛОВОК (ТЕПЕРЬ СТРОГО В ОДНУ ЛИНИЮ) ── */
+  h1 {
+    font-family: 'Russo One', sans-serif;
+    font-size: clamp(20px, 3.2vw, 32px);
+    letter-spacing: 1.2px;
+    color: #fff;
+    text-shadow: 0 0 30px rgba(232,124,30,.45);
+    margin-bottom: 22px;
+    line-height: 1.25;
+    white-space: nowrap; /* Не дает тексту ломаться на 2 строки на мониторах */
+  }
+
+  @media (max-width: 768px) {
+    h1 {
+      white-space: normal; /* На узких смартфонах перенос разрешен */
+      font-size: 24px;
+    }
+  }
+
+  /* ── ИНФО-БОКС (ПРАВИЛА РАННЕГО ДОСТУПА) ── */
+  .note-box {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--orange);
+    border-radius: 4px;
+    padding: 18px 24px;
+    margin-bottom: 24px;
+    font-size: 14px;
+    line-height: 1.50;
+    color: var(--textdim);
+    text-align: left;
+  }
+
+  .note-box p {
+    margin-bottom: 8px;
+  }
+  .note-box p:last-child {
+    margin-bottom: 0;
+  }
+  .note-box strong {
+    color: #fff;
+  }
+
+  /* ── ТЕКСТ ПОД ЗАГОЛОВКОМ ── */
+  .main-desc {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.5;
+    color: var(--text);
+    margin-bottom: 24px;
+  }
+
+  .main-desc a {
+    color: var(--orange2);
+    text-decoration: underline;
+    transition: color .2s;
+  }
+  .main-desc a:hover {
+    color: #fff;
+  }
+
+  .highlight {
+    color: var(--mint);
+    font-weight: 700;
+    text-shadow: 0 0 10px rgba(0, 255, 174, 0.4);
+  }
+
+  /* ── ГЛАВНАЯ КАРТИНКА РАННЕГО ДОСТУПА ── */
+  .hero-img-wrap {
+    margin: 15px auto 28px;
+    max-width: 350px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+  }
+
+  .hero-img-wrap img {
+    width: 100%;
+    display: block;
+    filter: brightness(.95) contrast(1.05);
+  }
+
+  .corner { position: absolute; width: 16px; height: 16px; z-index: 2; }
+  .corner.tl { top: 0; left: 0;  border-top: 2px solid var(--orange); border-left: 2px solid var(--orange); }
+  .corner.tr { top: 0; right: 0; border-top: 2px solid var(--orange); border-right: 2px solid var(--orange); }
+  .corner.bl { bottom: 0; left: 0;  border-bottom: 2px solid var(--orange); border-left: 2px solid var(--orange); }
+  .corner.br { bottom: 0; right: 0; border-bottom: 2px solid var(--orange); border-right: 2px solid var(--orange); }
+
+  /* ── СЕКЦИИ ПОКУПКИ ── */
+  .section-buy {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    padding: 24px 20px;
+    margin-bottom: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .section-buy::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, var(--orange) 0%, transparent 100%);
+  }
+
+  .section-buy h2 {
+    font-family: 'Russo One', sans-serif;
+    font-size: 18px;
+    letter-spacing: 1px;
+    color: #fff;
+    margin-bottom: 18px;
+    text-transform: uppercase;
+  }
+
+  .buttons-row {
+    display: flex;
+    justify-content: center;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  .btn-pay {
+    font-family: 'Russo One', sans-serif;
+    font-size: 14px;
+    letter-spacing: 1.2px;
+    padding: 13px 40px;
+    border-radius: 3px;
+    text-decoration: none;
+    color: #fff;
+    text-transform: uppercase;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 170px;
+  }
+
+  /* FunPay */
+  .btn-funpay {
+    background: linear-gradient(45deg, #107c41, #27ae60);
+    border: 1px solid #2ecc71;
+    box-shadow: 0 4px 15px rgba(39, 174, 96, 0.25);
+  }
+  .btn-funpay:hover {
+    background: linear-gradient(45deg, #16a085, #2ecc71);
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(46, 204, 113, 0.55);
+  }
+
+  /* Digiseller */
+  .btn-digiseller {
+    background: linear-gradient(45deg, #1a5276, #2980b9);
+    border: 1px solid #3498db;
+    box-shadow: 0 4px 15px rgba(41, 128, 185, 0.25);
+  }
+  .btn-digiseller:hover {
+    background: linear-gradient(45deg, #2471a3, #3498db);
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(52, 152, 219, 0.55);
+  }
+
+  /* ── ФУТЕР ── */
+  .footer {
+    margin-top: 40px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px;
+    color: var(--textdim);
+    letter-spacing: 2px;
+  }
+
+  /* ── ЗНАЧОК В НИЖНЕМ ПРАВОМ УГЛУ ── */
+  .corner-img {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 90px;
+    height: 90px;
+    z-index: 99;
+    pointer-events: none;
+    opacity: 0.65;
+    filter: drop-shadow(0 0 10px rgba(0,0,0,0.8));
+  }
+
+  /* ── ВСПЛЫВАЮЩИЙ POPUP (СДЕЛАЛИ ПОУЖЕ: 280px) ── */
+  #lldd-popup {
+    position: fixed;
+    left: 20px;
+    bottom: 20px;
+    width: 280px; /* Было 350px — сделали аккуратным и компактным */
+    max-width: calc(100vw - 40px);
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--orange);
+    border-radius: 6px;
+    box-shadow: 0 12px 35px rgba(0,0,0,.85);
+    z-index: 99999;
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all .4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    font-family: 'Exo 2', sans-serif;
+    pointer-events: none;
+    visibility: hidden;
+    text-align: center;
+  }
+
+  #lldd-popup.show {
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
+    visibility: visible;
+  }
+
+  #lldd-popup.hide {
+    opacity: 0;
+    transform: translateY(30px);
+    pointer-events: none;
+    visibility: hidden;
+  }
+
+  #lldd-close {
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    width: 28px;
+    height: 28px;
+    background: var(--orange);
+    border: 1px solid #000;
+    border-radius: 50%;
+    color: #fff;
+    text-align: center;
+    line-height: 26px;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+    box-shadow: 0 4px 10px rgba(0,0,0,.6);
+    transition: transform .2s, background .2s;
+    z-index: 100;
+  }
+  #lldd-close:hover {
+    transform: scale(1.15);
+    background: var(--orange2);
+  }
+
+  #lldd-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 14px;
+  }
+
+  #lldd-image {
+    width: 100%;
+    height: 160px; /* Уменьшили высоту под узкую ширину */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    border-radius: 4px;
+    border: 1px solid var(--border);
+    background: rgba(0,0,0,0.3);
+  }
+
+  #lldd-img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  #lldd-content {
+    width: 100%;
+    padding-top: 12px;
+  }
+
+  #lldd-text {
+    font-size: 12px; /* Чуть компактнее текст для узкого блока */
+    line-height: 1.45;
+    font-weight: 600;
+    color: var(--text);
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ЗАГОЛОВОК СТРАНИЦЫ (ТЕПЕРЬ В ОДНУ ЛИНИЮ) -->
+  <h1>« Ранний доступ к модпаку WoT-Lom »</h1>
+
+  <!-- ПРАВИЛА И СУТЬ РАННЕГО ДОСТУПА -->
+  <div class="note-box">
+    <p>• <strong>Ранний доступ</strong> — это когда вышел новый патч, но модпак еще не полностью готов (обновление + тестирование + правки модов).</p>
+    <p>• Покупая ранний доступ, вы покупаете его на <strong>2-3-4 дня</strong>, пока не выйдет основной модпак. Затем до конца патча всё опять бесплатно!</p>
+    <p>• Хотите сразу после выхода нового патча играть с читами - покупайте ранний доступ. Готовы подождать - ждите и ничего не покупайте.</p>
+  </div>
+
+  <!-- ОПИСАНИЕ И ТЕЛЕГРАМ -->
+  <p class="main-desc">
+    В раннем доступе в сборке будут <span class="highlight">только читы</span>. Полный модпак будет готов примерно <span class="highlight">через 2-3-4 дня</span>.<br>За это время я спокойно всё проверю и по готовности сразу выложу. Полный модпак как был, так и остаётся <span class="highlight">бесплатным !!!</span><br>
+    Вся инфа про обновы и т.д. как обычно в ТГ канале: <a href="https://t.me/WoTLom" target="_blank"><span class="highlight">https://t.me/WoTLom</span></a> (@WoTLom)
+  </p>
+
+  <!-- КАРТИНКА РАННЕГО ДОСТУПА -->
+  <div class="hero-img-wrap">
+    <div class="corner tl"></div>
+    <div class="corner tr"></div>
+    <div class="corner bl"></div>
+    <div class="corner br"></div>
+    <img src="images/early-acces1s.jpg" alt="WoT-Lom Early Access">
+  </div>
+
+  <!-- БЛОК СКАЧИВАНИЯ RU -->
+  <div class="section-buy">
+    <h2>Скачать WoT-Lom «RU регион»</h2>
+    <div class="buttons-row">
+      <a href="https://funpay.com/lots/offer?id=65199347" class="btn-pay btn-funpay" target="_blank">FunPay</a>
+      <a href="https://oplata.info/asp2/pay_wm.asp?id_d=6081228&lang=ru-RU" class="btn-pay btn-digiseller" target="_blank">Digiseller</a>
+    </div>
+  </div>
+
+  <!-- БЛОК СКАЧИВАНИЯ EU -->
+  <div class="section-buy">
+    <h2>Скачать WoT-Lom «EU регион»</h2>
+    <div class="buttons-row">
+      <a href="https://funpay.com/lots/offer?id=76370693" class="btn-pay btn-funpay" target="_blank">FunPay</a>
+      <a href="https://oplata.info/asp2/pay_wm.asp?id_d=6081226&lang=ru-RU" class="btn-pay btn-digiseller" target="_blank">Digiseller</a>
+    </div>
+  </div>
+
+  <!-- ФУТЕР -->
+  <div class="footer">
+    &copy; 2026 Сайт WoT-Lom.com
+  </div>
+
+</div><!-- /container -->
+
+<!-- ЗНАЧОК В УГЛУ -->
+<img src="images/ico4.png" class="corner-img" alt="WoT-Lom">
+
+<!-- ВСПЛЫВАЮЩИЙ POPUP -->
+<div id="lldd-popup">
+  <div id="lldd-close">✕</div>
+  <div id="lldd-inner">
+    <div id="lldd-image">
+      <img id="lldd-img" src="images/5c1ec0.jpg" alt="Инфо">
+    </div>
+    <div id="lldd-content">
+      <div style="height:1px; background:var(--border); width:100%; margin: 8px 0 10px;"></div>
+      <div id="lldd-text">
+        Внимание, после покупки на FunPay не забывайте нажимать на кнопку <span style="color: #FFB841; font-weight: bold;">«Подтвердить выполнение заказа»</span>.<br><br>
+        А если что-то не так, то пишите мне в ТГ или в чат у меня на сайте.<br><br>
+        Если методы оплаты не подходят, можете оплатить <span style="color: var(--mint); font-weight: bold;">50 ТГ звёзд</span>, написав мне сперва в личку ТГ <strong>@LMLom777</strong>
+      </div>
+      <div style="height:1px; background:var(--border); width:100%; margin: 10px 0 4px;"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function(){
+  if (document.cookie.includes("LLDD=1")) return;
+
+  const popup = document.getElementById("lldd-popup");
+  const openSound = new Audio("sounds/1apple-pay.mp3");
+  const closeSound = new Audio("sounds/1switch-button.mp3");
+
+  setTimeout(() => {
+    popup.classList.add("show");
+    openSound.play().catch(() => {});
+    document.cookie = "LLDD=1;max-age=30;path=/";
+  }, 3000);
+
+  document.getElementById("lldd-close").onclick = function(){
+    popup.classList.remove("show");
+    popup.classList.add("hide");
+    closeSound.play().catch(() => {});
+  };
+})();
+</script>
+
+</body>
+</html>
