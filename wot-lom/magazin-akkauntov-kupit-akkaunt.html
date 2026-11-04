@@ -22,8 +22,8 @@
 
   html { scroll-behavior: smooth; }
 
-  body {
-    background: var(--bg);
+body {
+    background: var(--bg) !important; /* Запрещаем Digiseller менять цвет фона */
     color: var(--text);
     font-family: 'Exo 2', sans-serif;
     min-height: 100vh;
@@ -33,23 +33,25 @@
 
   /* ── ФОНОВАЯ ТЕКСТУРА СЕТКИ ── */
   body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
+    content: '' !important;
+    position: fixed !important;
+    inset: 0 !important;
     background-image:
       repeating-linear-gradient(0deg,   transparent, transparent 39px, rgba(30,45,61,.35) 39px, rgba(30,45,61,.35) 40px),
-      repeating-linear-gradient(90deg,  transparent, transparent 39px, rgba(30,45,61,.20) 39px, rgba(30,45,61,.20) 40px);
-    pointer-events: none;
-    z-index: 0;
+      repeating-linear-gradient(90deg,  transparent, transparent 39px, rgba(30,45,61,.20) 39px, rgba(30,45,61,.20) 40px) !important;
+    pointer-events: none !important;
+    z-index: 0 !important;
+    display: block !important;
   }
 
   body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(232,124,30,.08) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 0;
+    content: '' !important;
+    position: fixed !important;
+    inset: 0 !important;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(232,124,30,.08) 0%, transparent 70%) !important;
+    pointer-events: none !important;
+    z-index: 0 !important;
+    display: block !important;
   }
 
   /* ── КОНТЕЙНЕР (ПРОСТОРНЫЙ: 1100px ДЛЯ 4 КОЛОНОК ТОВАРОВ) ── */
@@ -154,6 +156,16 @@
       text-align: center;
     }
   }
+  
+/* Делаем подложку самого магазина прозрачной под наш стиль */
+  .digiseller-body, 
+  .digiseller-body * {
+    box-sizing: border-box;
+  }
+  
+  .digiseller-body {
+    background: transparent !important;
+  }  
 </style>
 </head>
 <body>
