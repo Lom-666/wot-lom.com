@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Магазин аккаунтов и цифровых товаров — WoT-Lom</title>
+<link rel="icon" type="image/png" href="images/logo_from.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Russo+One&family=Exo+2:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:        #080b0f;
+    --panel:     #111820;
+    --border:    #1e2d3d;
+    --orange:    #e87c1e;
+    --orange2:   #ff9b3a;
+    --text:      #c8d4de;
+    --textdim:   #7a8fa0;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Exo 2', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* ── ФОНОВАЯ ТЕКСТУРА СЕТКИ ── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      repeating-linear-gradient(0deg,   transparent, transparent 39px, rgba(30,45,61,.35) 39px, rgba(30,45,61,.35) 40px),
+      repeating-linear-gradient(90deg,  transparent, transparent 39px, rgba(30,45,61,.20) 39px, rgba(30,45,61,.20) 40px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(232,124,30,.08) 0%, transparent 70%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ── КОНТЕЙНЕР (ПРОСТОРНЫЙ: 1100px ДЛЯ 4 КОЛОНОК ТОВАРОВ) ── */
+  .container {
+    position: relative;
+    z-index: 1;
+    max-width: 1140px;
+    margin: 0 auto;
+    padding: 30px 20px 60px;
+  }
+
+  /* ── ВЕРХНЯЯ НАВИГАЦИЯ / ШАПКА ── */
+  .top-bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .back-btn {
+    font-family: 'Russo One', sans-serif;
+    font-size: 13px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+    color: var(--orange);
+    border: 1px solid rgba(232,124,30,.4);
+    background: rgba(232,124,30,.06);
+    padding: 8px 18px;
+    border-radius: 2px;
+    transition: all .25s ease;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .back-btn:hover {
+    background: var(--orange);
+    color: #fff;
+    box-shadow: 0 0 15px rgba(232,124,30,.35);
+  }
+
+  h1 {
+    font-family: 'Russo One', sans-serif;
+    font-size: clamp(22px, 4vw, 34px);
+    letter-spacing: 1.5px;
+    color: #fff;
+    text-shadow: 0 0 25px rgba(232,124,30,.4);
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  h1 em {
+    color: var(--orange);
+    font-style: normal;
+  }
+
+  /* ── КОРПУС МАГАЗИНА (РАМКА ДЛЯ DIGISELLER) ── */
+  .store-wrapper {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-top: 2px solid var(--orange);
+    border-radius: 4px;
+    padding: 24px;
+    position: relative;
+    min-height: 550px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+  }
+
+  /* Угловые оранжевые засечки */
+  .corner { position: absolute; width: 16px; height: 16px; z-index: 2; }
+  .corner.tl { top: 0; left: 0;  border-top: 2px solid var(--orange); border-left: 2px solid var(--orange); }
+  .corner.tr { top: 0; right: 0; border-top: 2px solid var(--orange); border-right: 2px solid var(--orange); }
+  .corner.bl { bottom: 0; left: 0;  border-bottom: 2px solid var(--orange); border-left: 2px solid var(--orange); }
+  .corner.br { bottom: 0; right: 0; border-bottom: 2px solid var(--orange); border-right: 2px solid var(--orange); }
+
+  /* ── СТИЛИЗАЦИЯ ИНТЕРФЕЙСА DIGISELLER ПОД ТЁМНУЮ ТЕМУ ── */
+  #digiseller-body {
+    display: block;
+    width: 100%;
+  }
+
+  /* ── ФУТЕР ── */
+  .footer {
+    margin-top: 36px;
+    text-align: center;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 11px;
+    color: var(--textdim);
+    letter-spacing: 2px;
+  }
+
+  @media (max-width: 650px) {
+    .store-wrapper {
+      padding: 12px;
+    }
+    .top-bar {
+      flex-direction: column;
+      gap: 10px;
+      text-align: center;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- ВЕРХНЯЯ ПАНЕЛЬ С КНОПКОЙ НАЗАД -->
+  <div class="top-bar">
+    <a href="../index.html" class="back-btn">‹ На главную</a>
+    <div style="font-family:'Share Tech Mono',monospace; font-size:11px; color:var(--textdim); letter-spacing:2px; text-transform:uppercase;">
+      DIGITAL GOODS STORE
+    </div>
+  </div>
+
+  <!-- ЗАГОЛОВОК -->
+  <h1>Магазин аккаунтов и <em>ключей</em></h1>
+
+  <!-- РАМКА МАГАЗИНА С ВИДЖЕТОМ DIGISELLER -->
+  <div class="store-wrapper">
+    <div class="corner tl"></div>
+    <div class="corner tr"></div>
+    <div class="corner bl"></div>
+    <div class="corner br"></div>
+
+    <!-- КОД МАГАЗИНА DIGISELLER -->
+    <script>!function(e){var l=function(l){return e.cookie.match(new RegExp("(?:^|; )digiseller-"+l+"=([^;]*)"))},i=l("lang"),s=l("cart_uid"),t=i?"&lang="+i[1]:"",d=s?"&cart_uid="+s[1]:"",r=e.getElementsByTagName("head")[0]||e.documentElement,n=e.createElement("link"),a=e.createElement("script");n.type="text/css",n.rel="stylesheet",n.id="digiseller-css",n.href="//shop.digiseller.com/xml/store2_css.asp?seller_id=867195",a.async=!0,a.id="digiseller-js",a.src="//digiseller.com/store2/digiseller-api.js.asp?seller_id=867195"+t+d,!e.getElementById(n.id)&&r.appendChild(n),!e.getElementById(a.id)&&r.appendChild(a)}(document);</script>
+
+    <span class="digiseller-body" id="digiseller-body" data-partner-id="" data-cat="0" data-logo="1" data-downmenu="0" data-purchases="1" data-langs="1" data-cart="1" data-search="1"></span>
+
+  </div>
+
+  <!-- ФУТЕР -->
+  <div class="footer">
+    &copy; 2026 WoT-Lom &nbsp;·&nbsp; Безопасная онлайн-оплата через сервис Digiseller
+  </div>
+
+</div>
+
+</body>
+</html>
