@@ -1,22 +1,22 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Определяем, где открыта страница: на главной или в подпапке wot-lom
+  // Определяем базовый путь, чтобы ссылки никогда не двоились
+  const isLocal = window.location.protocol === 'file:';
   const inSubfolder = window.location.pathname.includes('/wot-lom/');
   
-  // Автоматически настраиваем правильные пути к файлам
-  const pagePath = inSubfolder ? '' : 'wot-lom/';
-  const homePath = inSubfolder ? '../index.html' : 'index.html';
+  // На GitHub Pages используем точный путь от корня /wot-lom.com/wot-lom/, а локально — относительный
+  const basePath = isLocal ? (inSubfolder ? '' : 'wot-lom/') : '/wot-lom.com/wot-lom/';
 
   // 1. КОД НАВИГАЦИОННОГО МЕНЮ
   const navContainer = document.getElementById("site-nav");
   if (navContainer) {
     navContainer.innerHTML = `
-	  <a href="wot-lom/modpack-wot-lom.html">WoT-Lom Модпак (RU/EU)</a>
-      <a href="wot-lom/modpack-tankalomych.html">Tankalomыч · Мир Танков</a>
-      <a href="wot-lom/modpack-common-test.html">Модпак для тест-сервера</a>
-      <a href="wot-lom/trial-cheats.html">Читы по отдельности</a>
-	  
+      <a href="${basePath}modpack-wot-lom.html">WoT-Lom Модпак (RU/EU)</a>
+      <a href="${basePath}modpack-tankalomych.html">Tankalomыч · Мир Танков</a>
+      <a href="${basePath}modpack-common-test.html">Модпак для тест-сервера</a>
+      <a href="${basePath}trial-cheats.html">Читы по отдельности</a>
+      <a href="${basePath}magazin-akkauntov-kupit-akkaunt.html">☑ Магазин аккаунтов и ключей</a>
+      
       <!-- ВНЕШНИЕ ССЫЛКИ В НОВОЙ ВКЛАДКЕ -->
-	  <a href="wot-lom/magazin-akkauntov-kupit-akkaunt.html">☑ Магазин аккаунтов и ключей</a>
       <a href="https://www.youtube.com/@WoT-Lomm" target="_blank" rel="noopener noreferrer">★ Ютуб канал сайта</a>
       <a href="https://t.me/WoTLom" target="_blank" rel="noopener noreferrer">★ ТГ канал сайта</a>
       <a href="https://t.me/WoT_Lom" target="_blank" rel="noopener noreferrer">★ ТГ группа сайта</a>
