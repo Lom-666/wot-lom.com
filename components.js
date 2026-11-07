@@ -20,6 +20,9 @@ document.addEventListener("DOMContentLoaded", function () {
       <a href="https://www.youtube.com/@WoT-Lomm" target="_blank" rel="noopener noreferrer">★ Ютуб канал сайта</a>
       <a href="https://t.me/WoTLom" target="_blank" rel="noopener noreferrer">★ ТГ канал сайта</a>
       <a href="https://t.me/WoT_Lom" target="_blank" rel="noopener noreferrer">★ ТГ группа сайта</a>
+	  
+	  <a href="${basePath}full-aimbot-lombot.html">★ Full AimBot (шайтан)</a>
+	  <a href="${basePath}rozygrysh-goldy.html">★ Розыгрыш голды</a>
     `;
 
     // Автоматическая подсветка активной страницы
