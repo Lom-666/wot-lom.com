@@ -794,10 +794,9 @@
       <div class="corner tr"></div>
       <div class="corner bl"></div>
       <div class="corner br"></div>
-      
-      <div class="partner-placeholder">
-        РЕКЛАМНЫЙ БЛОК<br>160 × 600<br>(ЛЕВЫЙ)
-      </div>
+  
+      <!-- Скрипт вставит рекламу ровно внутрь этого контейнера -->
+      <div id="ad-left" style="width:100%;"></div>
     </div>
   </aside>
 
@@ -818,18 +817,7 @@
     </header>
 
     <!-- МЕНЮ (Страница WoT-Lom активна) -->
-    <nav class="site-nav">
-	<a href="modpack-wot-lom.html" class="active">WoT-Lom Модпак (RU/EU)</a>
-      <a href="modpack-tankalomych.html">Tankalomыч · Мир Танков</a>
-      <a href="modpack-common-test.html">Модпак для тест-сервера</a>
-      <a href="trial-cheats.html">Читы по отдельности</a>
-	  
-      <!-- ВНЕШНИЕ ССЫЛКИ В НОВОЙ ВКЛАДКЕ -->
-	  <a href="wot-lom/magazin-akkauntov-kupit-akkaunt.html">☑ Магазин аккаунтов и ключей</a>
-      <a href="https://www.youtube.com/@WoT-Lomm" target="_blank" rel="noopener noreferrer">★ Ютуб канал сайта</a>
-      <a href="https://t.me/WoTLom" target="_blank" rel="noopener noreferrer">★ ТГ канал сайта</a>
-      <a href="https://t.me/WoT_Lom" target="_blank" rel="noopener noreferrer">★ ТГ группа сайта</a>	  
-    </nav>
+    <nav class="site-nav" id="site-nav"></nav>
 
     <!-- ГЛАВНОЕ ИЗОБРАЖЕНИЕ -->
     <div class="hero-img-wrap">
@@ -893,7 +881,7 @@
       <!-- КНОПКИ СКАЧИВАНИЯ -->
       <div class="buttons-wrap" id="buttonsWrap">
 
-        <a href="https://drive.google.com/file/d/1JyqKjFHkaqHSJk2uRxsYgc5utXhjy3KS/view?usp=drive_link" target="_blank" class="dl-btn">
+        <a href="https://drive.google.com/file/d/1nUBMOAb6NnpjuTZof-TWkcjALEO9dTO4/view?usp=drive_link" target="_blank" class="dl-btn">
           <div class="btn-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
@@ -911,7 +899,7 @@
           <div class="btn-arrow">›</div>
         </a>
 
-        <a href="https://cloud.mail.ru/public/yRVT/jyNJoyESs" target="_blank" class="dl-btn">
+        <a href="https://cloud.mail.ru/public/3z4W/hMS84XTYS" target="_blank" class="dl-btn">
           <div class="btn-icon">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
@@ -985,10 +973,9 @@
       <div class="corner tr"></div>
       <div class="corner bl"></div>
       <div class="corner br"></div>
-
-      <div class="partner-placeholder">
-        РЕКЛАМНЫЙ БЛОК<br>160 × 600<br>(ПРАВЫЙ)
-      </div>
+  
+      <!-- Скрипт вставит рекламу ровно внутрь этого контейнера -->
+      <div id="ad-right" style="width:100%;"></div>
     </div>
   </aside>
 
@@ -1031,5 +1018,6 @@
   var timer = setInterval(update, 1000);
 })();
 </script>
+<script src="../components.js"></script>
 </body>
 </html>
