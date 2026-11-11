@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", function () {
         .mirror-badge-container {
           grid-column: 1 / -1 !important;
           grid-row: 2 !important;
-          margin: 5px auto 20px auto !important;
+          margin: 15px auto 25px auto !important;
           position: static !important;
           width: 100% !important;
           max-width: 320px !important;
