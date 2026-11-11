@@ -1,19 +1,23 @@
 document.addEventListener("DOMContentLoaded", function () {
-  // Определяем базовый путь, чтобы ссылки никогда не двоились
+  // ── 0. БАЗОВЫЕ ПУТИ ──
   const isLocal = window.location.protocol === 'file:';
   const inSubfolder = window.location.pathname.includes('/wot-lom/');
   const basePath = isLocal ? (inSubfolder ? '' : 'wot-lom/') : '/wot-lom.com/wot-lom/';
 
-  // ── 0. СТИЛИ ДЛЯ ПЛАШКИ ЗЕРКАЛА ──
-  if (!document.getElementById("mirror-badge-style")) {
+  // ── 1. ВНЕДРЕНИЕ СТИЛЕЙ (ПЛАШКА, ВЫРАВНИВАНИЕ И ОТСТУП ОТ ПОЛА) ──
+  if (!document.getElementById("site-dynamic-styles")) {
     const style = document.createElement("style");
-    style.id = "mirror-badge-style";
+    style.id = "site-dynamic-styles";
     style.textContent = `
+      /* ── ВНЕШНИЙ КОНТЕЙНЕР ПЛАШКИ ── */
       .mirror-badge-container {
         box-sizing: border-box;
-        z-index: 999;
+        width: 100%;
+        margin-bottom: 20px;
+        z-index: 10;
       }
 
+      /* ── САМА ПЛАШКА ЗЕРКАЛА ── */
       .mirror-badge-box {
         box-sizing: border-box;
         width: 100%;
@@ -21,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function () {
         border: 1px solid rgba(232, 124, 30, 0.45);
         border-top: 2px solid var(--orange, #e87c1e);
         border-radius: 4px;
-        padding: 10px 14px;
+        padding: 10px 12px;
         text-align: center;
         position: relative;
         overflow: hidden;
@@ -29,13 +33,13 @@ document.addEventListener("DOMContentLoaded", function () {
         animation: mirrorPulse 3.5s infinite ease-in-out;
       }
 
-      /* Плавный и замедленный бегущий блик (6 секунд) */
+      /* Плавный неспешный блик (6 секунд) */
       .mirror-badge-box::after {
         content: '';
         position: absolute;
         top: -50%;
         left: -150%;
-        width: 70px;
+        width: 60px;
         height: 200%;
         background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.75), transparent);
         transform: rotate(25deg);
@@ -63,7 +67,7 @@ document.addEventListener("DOMContentLoaded", function () {
         font-family: 'Exo 2', sans-serif;
         font-size: 11px;
         font-weight: 600;
-        letter-spacing: 1.5px;
+        letter-spacing: 1.2px;
         color: var(--textdim, #7a8fa0);
         text-transform: uppercase;
         display: flex;
@@ -113,55 +117,74 @@ document.addEventListener("DOMContentLoaded", function () {
         text-shadow: 0 0 15px #ff9b3a;
       }
 
-      /* ══ ВЫРАВНИВАНИЕ НА МОНИТОРАХ (ФИКСАЦИЯ И СТРОГО ПО ЛИНИИ БЛОКА) ══ */
+      /* ── ПОВЕДЕНИЕ НА ШИРОКИХ ЭКРАНАХ (НА ОДНОЙ ЛИНИИ) ── */
       @media (min-width: 1441px) {
-        .mirror-badge-container {
-          position: fixed;
-          top: 24px;
-          left: calc(50% + 504px); /* Точные координаты правого рекламного блока */
-          width: 220px;            /* Ровно ширина правого рекламного блока */
+        .side-column.side-right {
+          margin-top: 36px !important; /* Начинается на высоте шапки */
+          top: 24px !important;        /* Фиксируется при скролле */
         }
       }
 
-      /* На экранах ноутбуков и планшетов центрируется в шапке */
+      /* ── ПОВЕДЕНИЕ НА МАЛЕНЬКИХ ЭКРАНАХ (ПЕРЕНОС ВНИЗ И ОТРЫВ ОТ ПОЛА) ── */
       @media (max-width: 1440px) {
+        .layout-container {
+          padding-bottom: 70px !important; /* ОТРЫВАЕМ РЕКЛАМУ ОТ ПОЛА */
+        }
         .mirror-badge-container {
-          position: static;
-          margin: 0 auto 16px auto;
-          width: 260px;
+          grid-column: 1 / -1 !important;
+          margin: 10px auto 20px auto !important;
+          width: 100% !important;
+          max-width: 320px !important;
         }
       }
     `;
     document.head.appendChild(style);
   }
 
-  // ── 1. ВСТАВКА ПЛАШКИ ЗЕРКАЛА ──
-  let mirrorBox = document.getElementById("mirror-badge");
-  if (!mirrorBox) {
-    const header = document.querySelector("header");
-    if (header) {
-      mirrorBox = document.createElement("div");
-      mirrorBox.id = "mirror-badge";
-      header.prepend(mirrorBox);
+  // ── 2. СОЗДАНИЕ И УМНОЕ РАЗМЕЩЕНИЕ ПЛАШКИ ──
+  let badge = document.getElementById("mirror-badge");
+  if (!badge) {
+    badge = document.createElement("div");
+    badge.id = "mirror-badge";
+  }
+  badge.className = "mirror-badge-container";
+  badge.innerHTML = `
+    <div class="mirror-badge-box">
+      <div class="mirror-badge-top">
+        <span class="mirror-live-dot"></span>
+        Официальное зеркало
+      </div>
+      <div class="mirror-badge-bottom">
+        сайта <a href="https://wot-lom.com/" target="_blank" rel="noopener noreferrer">WoT-Lom.com</a>
+      </div>
+    </div>
+  `;
+
+  // Функция автоматического перемещения плашки в зависимости от ширины экрана
+  function positionBadge() {
+    const rightCol = document.querySelector(".side-column.side-right");
+    const leftCol = document.querySelector(".side-column.side-left");
+    const layout = document.querySelector(".layout-container");
+
+    if (!badge || !layout) return;
+
+    if (window.innerWidth > 1440 && rightCol) {
+      // Компьютер: помещаем строго внутрь правой колонки над баннером
+      if (badge.parentElement !== rightCol) {
+        rightCol.insertBefore(badge, rightCol.firstChild);
+      }
+    } else if (leftCol) {
+      // Ноутбук/телефон: переносим вниз по центру перед рекламными блоками
+      if (badge.nextElementSibling !== leftCol) {
+        layout.insertBefore(badge, leftCol);
+      }
     }
   }
 
-  if (mirrorBox) {
-    mirrorBox.className = "mirror-badge-container";
-    mirrorBox.innerHTML = `
-      <div class="mirror-badge-box">
-        <div class="mirror-badge-top">
-          <span class="mirror-live-dot"></span>
-          Официальное зеркало
-        </div>
-        <div class="mirror-badge-bottom">
-          сайта <a href="https://wot-lom.com/" target="_blank" rel="noopener noreferrer">WoT-Lom.com</a>
-        </div>
-      </div>
-    `;
-  }
+  positionBadge();
+  window.addEventListener("resize", positionBadge);
 
-  // ── 2. КОД НАВИГАЦИОННОГО МЕНЮ ──
+  // ── 3. КОД НАВИГАЦИОННОГО МЕНЮ ──
   const navContainer = document.getElementById("site-nav");
   if (navContainer) {
     navContainer.innerHTML = `
@@ -187,7 +210,7 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // ── 3. КОД ЛЕВОГО РЕКЛАМНОГО БЛОКА ──
+  // ── 4. ЛЕВЫЙ РЕКЛАМНЫЙ БЛОК ──
   const adLeft = document.getElementById("ad-left");
   if (adLeft) {
     adLeft.innerHTML = `
@@ -197,7 +220,7 @@ document.addEventListener("DOMContentLoaded", function () {
     `;
   }
 
-  // ── 4. КОД ПРАВОГО РЕКЛАМНОГО БЛОКА ──
+  // ── 5. ПРАВЫЙ РЕКЛАМНЫЙ БЛОК ──
   const adRight = document.getElementById("ad-right");
   if (adRight) {
     adRight.innerHTML = `
