@@ -116,7 +116,7 @@ document.addEventListener("DOMContentLoaded", function () {
       @media (min-width: 1401px) {
         .mirror-badge-container {
           position: absolute !important;
-          bottom: calc(100% + 20px) !important;
+          bottom: calc(100% + 40px) !important;
           left: 0 !important;
           width: 100% !important;
           margin: 0 !important;
