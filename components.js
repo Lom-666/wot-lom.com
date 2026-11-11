@@ -128,7 +128,7 @@ document.addEventListener("DOMContentLoaded", function () {
       /* ── НА МАЛЕНЬКИХ ЭКРАНАХ: СТРОГО НАД БЛОКАМИ РЕКЛАМЫ И ОТРЫВ ОТ ПОЛА ── */
       @media (max-width: 1440px) {
         .layout-container {
-          padding-bottom: 70px !important; /* Отрыв рекламы от нижнего края */
+          padding-bottom: 30px !important; /* Отрыв рекламы от нижнего края */
         }
         .wrap {
           grid-column: 1 / -1 !important;
