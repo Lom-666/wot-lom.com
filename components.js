@@ -4,20 +4,17 @@ document.addEventListener("DOMContentLoaded", function () {
   const inSubfolder = window.location.pathname.includes('/wot-lom/');
   const basePath = isLocal ? (inSubfolder ? '' : 'wot-lom/') : '/wot-lom.com/wot-lom/';
 
-  // ── 1. ВНЕДРЕНИЕ СТИЛЕЙ (ПЛАШКА, ВЫРАВНИВАНИЕ И ОТСТУП ОТ ПОЛА) ──
+  // ── 1. СТИЛИ (НЕ ТРОГАЮТ ВЫСОТУ РЕКЛАМЫ И СТРОГО ВЫРАВНИВАЮТ ПЛАШКУ) ──
   if (!document.getElementById("site-dynamic-styles")) {
     const style = document.createElement("style");
     style.id = "site-dynamic-styles";
     style.textContent = `
-      /* ── ВНЕШНИЙ КОНТЕЙНЕР ПЛАШКИ ── */
+      /* ── ПЛАШКА ЗЕРКАЛА ── */
       .mirror-badge-container {
         box-sizing: border-box;
-        width: 100%;
-        margin-bottom: 20px;
         z-index: 10;
       }
 
-      /* ── САМА ПЛАШКА ЗЕРКАЛА ── */
       .mirror-badge-box {
         box-sizing: border-box;
         width: 100%;
@@ -33,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function () {
         animation: mirrorPulse 3.5s infinite ease-in-out;
       }
 
-      /* Плавный неспешный блик (6 секунд) */
+      /* Плавный блик */
       .mirror-badge-box::after {
         content: '';
         position: absolute;
@@ -117,31 +114,59 @@ document.addEventListener("DOMContentLoaded", function () {
         text-shadow: 0 0 15px #ff9b3a;
       }
 
-      /* ── ПОВЕДЕНИЕ НА ШИРОКИХ ЭКРАНАХ (НА ОДНОЙ ЛИНИИ) ── */
+      /* ── НА ШИРОКИХ ЭКРАНАХ: СИДИТ РОВНО НАД ПРАВОЙ КОЛОНКОЙ, НЕ СМЕЩАЯ ЕЁ ── */
       @media (min-width: 1441px) {
-        .side-column.side-right {
-          margin-top: 36px !important; /* Начинается на высоте шапки */
-          top: 24px !important;        /* Фиксируется при скролле */
+        .mirror-badge-container {
+          position: absolute !important;
+          bottom: calc(100% + 20px) !important; /* Ровно на 20px выше правого блока */
+          left: 0 !important;
+          width: 100% !important; /* Ширина ровно 220px по границам блока */
+          margin: 0 !important;
         }
       }
 
-      /* ── ПОВЕДЕНИЕ НА МАЛЕНЬКИХ ЭКРАНАХ (ПЕРЕНОС ВНИЗ И ОТРЫВ ОТ ПОЛА) ── */
+      /* ── НА МАЛЕНЬКИХ ЭКРАНАХ: СТРОГО НАД БЛОКАМИ РЕКЛАМЫ И ОТРЫВ ОТ ПОЛА ── */
       @media (max-width: 1440px) {
         .layout-container {
-          padding-bottom: 70px !important; /* ОТРЫВАЕМ РЕКЛАМУ ОТ ПОЛА */
+          padding-bottom: 70px !important; /* Отрыв рекламы от нижнего края */
+        }
+        .wrap {
+          grid-column: 1 / -1 !important;
+          grid-row: 1 !important;
         }
         .mirror-badge-container {
           grid-column: 1 / -1 !important;
-          margin: 10px auto 20px auto !important;
+          grid-row: 2 !important; /* СТРОГО ВТОРАЯ СТРОКА (НАД РЕКЛАМОЙ) */
+          margin: 15px auto 25px auto !important;
+          position: static !important;
           width: 100% !important;
           max-width: 320px !important;
+        }
+        .side-column.side-left {
+          grid-column: 1 !important;
+          grid-row: 3 !important; /* РЕКЛАМА УХОДИТ НА ТРЕТЬЮ СТРОКУ (ПОД ПЛАШКУ) */
+        }
+        .side-column.side-right {
+          grid-column: 2 !important;
+          grid-row: 3 !important; /* РЕКЛАМА УХОДИТ НА ТРЕТЬЮ СТРОКУ (ПОД ПЛАШКУ) */
+        }
+      }
+
+      @media (max-width: 650px) {
+        .side-column.side-left {
+          grid-column: 1 !important;
+          grid-row: 3 !important;
+        }
+        .side-column.side-right {
+          grid-column: 1 !important;
+          grid-row: 4 !important;
         }
       }
     `;
     document.head.appendChild(style);
   }
 
-  // ── 2. СОЗДАНИЕ И УМНОЕ РАЗМЕЩЕНИЕ ПЛАШКИ ──
+  // ── 2. СОЗДАНИЕ И ПРАВИЛЬНОЕ ПЕРЕМЕЩЕНИЕ ПЛАШКИ ──
   let badge = document.getElementById("mirror-badge");
   if (!badge) {
     badge = document.createElement("div");
@@ -160,7 +185,6 @@ document.addEventListener("DOMContentLoaded", function () {
     </div>
   `;
 
-  // Функция автоматического перемещения плашки в зависимости от ширины экрана
   function positionBadge() {
     const rightCol = document.querySelector(".side-column.side-right");
     const leftCol = document.querySelector(".side-column.side-left");
@@ -169,13 +193,13 @@ document.addEventListener("DOMContentLoaded", function () {
     if (!badge || !layout) return;
 
     if (window.innerWidth > 1440 && rightCol) {
-      // Компьютер: помещаем строго внутрь правой колонки над баннером
+      // ПК: крепим внутрь правой колонки (она сидит над ней)
       if (badge.parentElement !== rightCol) {
-        rightCol.insertBefore(badge, rightCol.firstChild);
+        rightCol.prepend(badge);
       }
     } else if (leftCol) {
-      // Ноутбук/телефон: переносим вниз по центру перед рекламными блоками
-      if (badge.nextElementSibling !== leftCol) {
+      // Ноутбук/телефон: переносим в контейнер ПЕРЕД рекламными блоками
+      if (badge.parentElement !== layout || badge.nextElementSibling !== leftCol) {
         layout.insertBefore(badge, leftCol);
       }
     }
@@ -184,7 +208,7 @@ document.addEventListener("DOMContentLoaded", function () {
   positionBadge();
   window.addEventListener("resize", positionBadge);
 
-  // ── 3. КОД НАВИГАЦИОННОГО МЕНЮ ──
+  // ── 3. МЕНЮ НАВИГАЦИИ ──
   const navContainer = document.getElementById("site-nav");
   if (navContainer) {
     navContainer.innerHTML = `
