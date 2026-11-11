@@ -4,12 +4,19 @@ document.addEventListener("DOMContentLoaded", function () {
   const inSubfolder = window.location.pathname.includes('/wot-lom/');
   const basePath = isLocal ? (inSubfolder ? '' : 'wot-lom/') : '/wot-lom.com/wot-lom/';
 
-  // ── 0. СТИЛИ ДЛЯ ПЛАШКИ ЗЕРКАЛА (АВТОМАТИЧЕСКИ ВСТАВЛЯЮТСЯ В HEAD) ──
+  // ── 0. СТИЛИ ДЛЯ ПЛАШКИ ЗЕРКАЛА ──
   if (!document.getElementById("mirror-badge-style")) {
     const style = document.createElement("style");
     style.id = "mirror-badge-style";
     style.textContent = `
+      .mirror-badge-container {
+        box-sizing: border-box;
+        z-index: 999;
+      }
+
       .mirror-badge-box {
+        box-sizing: border-box;
+        width: 100%;
         background: var(--panel, #111820);
         border: 1px solid rgba(232, 124, 30, 0.45);
         border-top: 2px solid var(--orange, #e87c1e);
@@ -20,26 +27,25 @@ document.addEventListener("DOMContentLoaded", function () {
         overflow: hidden;
         box-shadow: 0 4px 20px rgba(0,0,0,0.6), 0 0 15px rgba(232, 124, 30, 0.2);
         animation: mirrorPulse 3.5s infinite ease-in-out;
-        z-index: 10;
       }
 
-      /* Бегущий блик/искра */
+      /* Плавный и замедленный бегущий блик (6 секунд) */
       .mirror-badge-box::after {
         content: '';
         position: absolute;
         top: -50%;
         left: -150%;
-        width: 60px;
+        width: 70px;
         height: 200%;
-        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.45), rgba(255, 255, 255, 0.8), transparent);
+        background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), rgba(255, 255, 255, 0.75), transparent);
         transform: rotate(25deg);
-        animation: mirrorShimmer 4s infinite ease-in-out;
+        animation: mirrorShimmer 6s infinite ease-in-out;
         pointer-events: none;
       }
 
       @keyframes mirrorShimmer {
-        0%, 25% { left: -150%; }
-        60%, 100% { left: 200%; }
+        0%, 30% { left: -150%; }
+        70%, 100% { left: 200%; }
       }
 
       @keyframes mirrorPulse {
@@ -64,7 +70,7 @@ document.addEventListener("DOMContentLoaded", function () {
         align-items: center;
         justify-content: center;
         gap: 6px;
-        margin-bottom: 3px;
+        margin-bottom: 4px;
       }
 
       .mirror-live-dot {
@@ -107,17 +113,17 @@ document.addEventListener("DOMContentLoaded", function () {
         text-shadow: 0 0 15px #ff9b3a;
       }
 
-      /* Расположение: на мониторах >1440px встаёт ровно над правым баннером */
+      /* ══ ВЫРАВНИВАНИЕ НА МОНИТОРАХ (ФИКСАЦИЯ И СТРОГО ПО ЛИНИИ БЛОКА) ══ */
       @media (min-width: 1441px) {
         .mirror-badge-container {
-          position: absolute;
-          top: 36px;
-          right: -244px; /* Ровно над правой колонкой 220px */
-          width: 220px;
+          position: fixed;
+          top: 24px;
+          left: calc(50% + 504px); /* Точные координаты правого рекламного блока */
+          width: 220px;            /* Ровно ширина правого рекламного блока */
         }
       }
 
-      /* На ноутбуках и планшетах центрируется вверху шапки */
+      /* На экранах ноутбуков и планшетов центрируется в шапке */
       @media (max-width: 1440px) {
         .mirror-badge-container {
           position: static;
@@ -131,7 +137,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   // ── 1. ВСТАВКА ПЛАШКИ ЗЕРКАЛА ──
   let mirrorBox = document.getElementById("mirror-badge");
-  // Если блока нет, скрипт сам автоматически найдет header и создаст его
   if (!mirrorBox) {
     const header = document.querySelector("header");
     if (header) {
@@ -175,7 +180,6 @@ document.addEventListener("DOMContentLoaded", function () {
       <a href="${basePath}rozygrysh-goldy.html">★ Розыгрыш голды</a>
     `;
 
-    // Автоматическая подсветка активной страницы
     const currentFile = window.location.pathname.split('/').pop() || 'index.html';
     const activeLink = navContainer.querySelector(`a[href$="${currentFile}"]`);
     if (activeLink) {
