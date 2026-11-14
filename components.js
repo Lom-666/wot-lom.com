@@ -241,7 +241,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (adLeft) {
     adLeft.innerHTML = `
       <div class="partner-placeholder">
-        <a href="https://t.me/PR_P2P" target="_blank">&lt;img src="https://lom-666.github.io/wot-lom.com/wot-lom/images/rekl/1PR_P2P.jpg" alt="Взаимопиар | Пиар каналов и сайтов | ВП" width="160" height="160" /&gt;</a>
+        <a href="https://t.me/PR_P2P" target="_blank"><img src="https://lom-666.github.io/wot-lom.com/wot-lom/images/rekl/1PR_P2P.jpg" alt="Взаимопиар | Пиар каналов и сайтов | ВП" width="160" height="160" </img></a>
 		<hr>
 		🚀 Открытая площадка для продвижения ваших Telegram-каналов, сайтов, YouTube и VK и т.д.
 		📢 Каталог интересных проектов и поиск партнеров для обмена аудиторией.
@@ -254,7 +254,7 @@ document.addEventListener("DOMContentLoaded", function () {
   if (adRight) {
     adRight.innerHTML = `
       <div class="partner-placeholder">
-        <a href="https://t.me/it_soft_ai" target="_blank">&lt;img src="https://lom-666.github.io/wot-lom.com/wot-lom/images/rekl/1it_soft_ai.png" alt="Нейросети, ИИ и софт" width="160" height="160" /&gt;</a>
+        <a href="https://t.me/it_soft_ai" target="_blank"><img src="https://lom-666.github.io/wot-lom.com/wot-lom/images/rekl/1it_soft_ai.png" alt="Нейросети, ИИ и софт" width="160" height="160"</img></a>
 		<hr>
 		📶 Тестируем нейросети, находим бесплатный софт и автоматизируем рутину.
 		*️⃣ Показываем технологии, которые экономят ваше время и деньги.
